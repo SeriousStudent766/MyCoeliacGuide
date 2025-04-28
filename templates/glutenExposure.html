@@ -1,0 +1,128 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/glutenExposure.css' %}">
+
+<div class="layout">
+    <!-- LEFT SIDE -->
+    <div class="main-feature">
+        <div class="container">
+            <h1>Gluten Exposure Log</h1>
+            <div class="inner-box">
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for="date">Enter Exposure Date:</label>
+                    <input type="date" id="date" name="date" required>
+
+                    <label for="reaction_count">Reaction Count:</label>
+                    <input type="number" id="reaction_count" name="reaction_count" min="0" required>
+
+                    <button type="submit">Add Exposure</button>
+                </form>
+
+                <h3>Exposure Chart</h3>
+
+                <!-- Chart Section -->
+                <div class="chart-container">
+                    <div class="year-selector">
+                        <label for="yearSelector">Select Year:</label>
+                        <select id="yearSelector"></select>
+                    </div>
+                    <canvas id="exposureChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE: Exposure History -->
+    <div class="new-feature">
+        <hr style="margin: 20px 0;">
+        <h2 style="color: #1a521c;">Last Reaction</h2>
+        <p><strong>{{ user_first_name|default:"You" }}</strong> {{ last_reaction_message }}</p>
+
+        <h3>Your Exposure History</h3>
+        <table style="width: 100%; max-width: 500px; margin: 0 auto; text-align: center;">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Count</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exposure in exposures %}
+                <tr>
+                    <td>{{ exposure.date }}</td>
+                    <td>{{ exposure.reaction_count }}</td>
+                    <td>
+                        <form method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_id" value="{{ exposure.id }}">
+                            <button type="submit" class="delete-btn"
+                                    onclick="return confirm('Are you sure you want to delete this entry?')">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">No records yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Chart Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="chart-data" type="application/json">{{ exposure_data|safe }}</script>
+
+<script>
+    const allData = JSON.parse(document.getElementById('chart-data').textContent);
+    const yearSelector = document.getElementById('yearSelector');
+    const ctx = document.getElementById('exposureChart').getContext('2d');
+
+    // Populate dropdown
+    const years = Object.keys(allData).sort((a, b) => b - a); // Sort years in descending order
+
+    years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelector.appendChild(option);
+    });
+
+    let chart;
+
+    function renderChart(year) {
+        const data = allData[year];
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Reactions',
+                    data: data.reaction_counts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+    }
+
+    // Initial load
+    if (years.length > 0) {
+    renderChart(years[0]);  // This now uses the most recent year
+    yearSelector.value = years[0];
+}
+
+
+    yearSelector.addEventListener('change', function () {
+        renderChart(this.value);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/recipe.css' %}">
+
+<div class="page-wrapper">
+    <div class="container">
+        <h1 class="mb-4">All Meals</h1>
+
+        <form method="get" class="filter-form">
+            <fieldset>
+                <legend>Filter and Sort Meals</legend>
+
+                <label><strong>Filter by Categories:</strong></label>
+                <div class="category-filter">
+                    {% for checkbox in form.category_choices %}
+                        <div class="form-check">
+                            {{ checkbox.tag }}
+                            {{ checkbox.choice_label }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <label for="sort_by"><strong>Sort by:</strong></label>
+                <select name="sort_by" id="sort_by" class="sort-dropdown">
+                    <option value="">-- Select --</option>
+                    <option value="calories">Calories</option>
+                    <option value="protein">Protein</option>
+                    <option value="fibre">Fibre</option>
+                    <option value="low_fat">Low Fat</option>
+                    <option value="low_carbs">Low Carbs</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary mt-2">Apply</button>
+            </fieldset>
+        </form>
+
+        <div class="meal-grid mt-4">
+            {% if meals %}
+                {% for meal in meals %}
+                    <div class="meal-card">
+                        <a href="{% url 'recipe_detail' meal.id %}">
+                            {% if meal.image %}
+                                <img src="{{ meal.image.url }}" class="meal-image" alt="{{ meal.name }}">
+                            {% else %}
+                                <img src="https://via.placeholder.com/400" class="meal-image" alt="{{ meal.name }}">
+                            {% endif %}
+                        </a>
+                        <div class="meal-info">
+                            <h5 class="meal-title">{{ meal.name }}</h5>
+                            <p class="meal-category"><strong>Category:</strong>
+                                {% for category in meal.categories.all %}
+                                    {{ category.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p><strong>Calories:</strong> {{ meal.calories }}</p>
+                            <p><strong>Protein:</strong> {{ meal.protein }}g</p>
+                            <p><strong>Carbs:</strong> {{ meal.carbs }}g</p>
+                            <p><strong>Fats:</strong> {{ meal.fats }}g</p>
+                            <p><strong>Fibre:</strong> {{ meal.fibre }}g</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-meals">No meals available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

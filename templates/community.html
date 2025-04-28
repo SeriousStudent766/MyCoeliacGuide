@@ -1,0 +1,92 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/community.css' %}">
+
+<div class="forum-wrapper">
+    <div class="forum-container">
+        <h1 class="forum-title">Community Discussions</h1>
+
+        <!-- 🔍 FILTER SECTION (Search & Sort) -->
+        <form method="get" class="community-filters">
+            <input type="text" name="q" placeholder="Search discussions..." value="{{ query }}">
+            
+            <select name="sort">
+                <option value="recent" {% if sort == 'recent' %}selected{% endif %}>Most Recent</option>
+                <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest</option>
+                <option value="most_liked" {% if sort == 'most_liked' %}selected{% endif %}>Most Liked</option>
+            </select>
+        
+            <button type="submit">Filter</button>
+        </form>
+        
+
+        <!-- Post a New Comment -->
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            <textarea name="community" placeholder="Start a new thread..." required></textarea>
+            <div class="button-wrapper">
+                <button type="submit">Post</button>
+            </div>
+        </form>
+
+
+
+        <!-- Threaded Comments -->
+        <div class="thread-list">
+            {% for comment in community %}
+            <div class="comment-thread">
+                <div class="comment-box">
+                    <p class="comment-content">{{ comment.content }}</p>
+                    <div class="meta">
+                        Posted by <strong>{{ comment.user.username }}</strong> • {{ comment.created_at|date:"d M Y, H:i" }}
+                    </div>
+
+                    <!--Like Button (only for top-level threads) -->
+                    
+                    {% if not comment.parent %}
+                    <div class="like-row">
+                        <form method="POST" class="like-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="like_id" value="{{ comment.id }}">
+                            <button type="submit" class="like-btn">
+                                👍 {{ comment.likes.count }}
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                <!-- 🔁 Reply form -->
+                <form method="POST" class="reply-form">
+                    {% csrf_token %}
+                    <textarea name="community" placeholder="Reply to this thread..." required></textarea>
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <div class="button-wrapper">
+                        <button type="submit">Reply</button>
+                    </div>
+                </form>
+
+
+
+                <!-- 🧵 Replies -->
+                <div class="reply-list">
+                    {% for reply in comment.replies.all %}
+                    <div class="reply-box">
+                        <p class="reply-content">{{ reply.content }}</p>
+                        <div class="meta">
+                            Replied by <strong>{{ reply.user.username }}</strong> • {{ reply.created_at|date:"d M Y, H:i" }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-threads">No discussions yet. Be the first to share!</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

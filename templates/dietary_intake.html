@@ -1,0 +1,104 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/diet.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="diet-wrapper">
+  <h2>Track Your Dietary Intake</h2>
+
+  <!-- Daily Summary -->
+  <div class="summary-card">
+    <h3>Today’s Summary</h3>
+
+    <div class="chart-wrapper">
+      <canvas id="nutritionChart"
+              data-carbs="{{ totals.carbs|default:'0' }}"
+              data-protein="{{ totals.protein|default:'0' }}"
+              data-fat="{{ totals.fat|default:'0' }}"></canvas>
+    </div>
+    
+
+
+  
+    <div class="macros">
+      <p><strong>Calories:</strong> {{ totals.calories|default:"0" }} kcal</p>
+      <p><strong>Carbs:</strong> {{ totals.carbs|default:"0" }}g</p>
+      <p><strong>Protein:</strong> {{ totals.protein|default:"0" }}g</p>
+      <p><strong>Fat:</strong> {{ totals.fat|default:"0" }}g</p>
+    </div>
+  </div>
+  
+
+  <!-- Food Log Form -->
+  <div class="log-form">
+    <h3>Add a Meal</h3>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-save">Add Meal</button>
+    </form>
+  </div>
+
+  <!-- Logs Display -->
+  <div class="meal-logs">
+    <h3>Today's Meals</h3>
+    {% for log in logs %}
+      <div class="meal-entry">
+        <h4>{{ log.meal_type|title }}</h4>
+        <p><strong>{{ log.food_name }}</strong></p>
+        <p>{{ log.calories }} kcal | {{ log.carbs }}g carbs | {{ log.protein }}g protein | {{ log.fat }}g fat</p>
+        <p>{% if log.gluten_free %}<span class="badge gluten-free">Gluten-Free</span>{% else %}<span class="badge">Contains Gluten</span>{% endif %}</p>
+      </div>
+    {% empty %}
+      <p>No meals logged yet.</p>
+    {% endfor %}
+  </div>
+
+  <div class="history-link" style="text-align: center; margin-top: 1rem;">
+    <a href="{% url 'dietary_history' %}" class="btn-history">📅 View Meal History</a>
+  </div>
+</div>
+
+<!-- Chart Script -->
+<script>
+  const canvas = document.getElementById('nutritionChart');
+
+  // Get values from data attributes
+  const carbs = parseInt(canvas.dataset.carbs) || 0;
+  const protein = parseInt(canvas.dataset.protein) || 0;
+  const fat = parseInt(canvas.dataset.fat) || 0;
+
+  const nutritionChart = new Chart(canvas.getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: ['Carbs', 'Protein', 'Fat'],
+      datasets: [{
+        label: 'Macros Breakdown',
+        data: [carbs, protein, fat],
+        backgroundColor: [
+          'rgba(255, 206, 86, 0.7)',
+          'rgba(75, 192, 192, 0.7)',
+          'rgba(255, 99, 132, 0.7)'
+        ],
+        borderColor: [
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(255, 99, 132, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+</script>
+
+{% endblock %}

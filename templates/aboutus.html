@@ -1,0 +1,89 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/aboutus.css' %}">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
+<!-- Section 1: About Us -->
+<div class="about-wrapper">
+    <div class="about-text">
+        <h4>ABOUT US</h4>
+        <h1>
+            Helping Individuals <br>
+            <span class="highlight">Take Control</span> of Their <br> Coeliac Journey.
+        </h1>
+        <p class="intro-text">
+            My Coeliac Guide is a personalised platform designed to empower those living with coeliac disease.
+            Our easy-to-use tools help you monitor gluten exposure, log symptoms, discover gluten-free recipes, 
+            and engage with a caring, supportive community.
+        </p>
+        <a href="{% url 'SignUp' %}" class="cta-btn">Join Now</a>
+    </div>
+
+    <div class="about-image-container">
+        <div class="decorative-shape"></div>
+        <div class="dot-overlay"></div>
+        <img src="{% static 'images/pexels-pixabay-356040.jpg' %}" alt="Coeliac awareness" class="about-img">
+    </div>
+</div>
+
+<!-- Section 2: What Is Coeliac (Image left, text right) -->
+<div class="about-wrapper">
+    <div class="about-image-container">
+        <div class="decorative-shape"></div>
+        <div class="dot-overlay"></div>
+        <img src="{% static 'images/coeliac-partial-villous-atrophy.jpg' %}" alt="What is Coeliac?" class="about-img">
+    </div>
+
+    <div class="about-text">
+        <h1>What Is Coeliac Disease?</h1>
+        <p class="intro-text">
+            Coeliac disease is a serious autoimmune condition where the body reacts to gluten, damaging the small intestine. 
+            It affects around 1 in 100 people in the UK. Symptoms vary but can include bloating, fatigue, weight loss, and 
+            digestive discomfort. The only treatment is a strict gluten-free diet.
+        </p>
+        <p>
+            My Coeliac Guide helps make this journey easier by offering tools that track gluten exposure, monitor symptoms,
+            and support lifestyle changes.
+        </p>
+    </div>
+</div>
+<!-- Section 3: What We Offer -->
+<div class="offer-section">
+    <p class="section-subtitle">What We Offer</p>
+    <h2 class="section-title">We provide the tools, support, and community you need.</h2>
+    <p class="section-description">
+      Whether you're newly diagnosed or years into your gluten-free journey, My Coeliac Guide helps simplify, support, and empower your daily life.
+    </p>
+  
+    <div class="offer-grid">
+      <div class="offer-card">
+        <i class='bx bx-notepad offer-icon'></i>
+        <h3>Track It</h3>
+        <p>Log your daily meals and symptoms to identify patterns and manage gluten exposure.</p>
+      </div>
+      <div class="offer-card">
+        <i class='bx bx-bowl-hot offer-icon'></i>
+        <h3>Discover It</h3>
+        <p>Browse gluten-free recipes tailored to coeliac-friendly ingredients and save your favourites.</p>
+      </div>
+      <div class="offer-card">
+        <i class='bx bx-group offer-icon'></i>
+        <h3>Connect It</h3>
+        <p>Join a supportive community of users sharing advice, feedback, and experiences.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <p>&copy; 2025 My Coeliac Guide. All rights reserved.</p>
+  </div>
+
+
+
+
+{% endblock %}

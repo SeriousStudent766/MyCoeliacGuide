@@ -1,0 +1,141 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+</style>
+
+  
+
+  <!-- Boxicons -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+
+ 
+
+
+
+    <title> {%block title%}My site{%endblock%}</title>
+
+</head>
+<body>
+
+
+  <nav class="NavigationBar" id="NavigationBar">
+    <div class="nav-container">
+      <!-- LOGO (Always visible) -->
+      <a href="{% url 'index' %}" class="logo">
+        <img src="{% static 'images/Group 1.png' %}" alt="MyCoeliacGuide Logo">
+      
+      </a>
+
+        <!-- Hamburger Menu for Mobile -->
+  <button class="menu-toggle" onclick="toggleMenu()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+         stroke-linejoin="round" class="lucide lucide-menu">
+      <line x1="4" x2="20" y1="6" y2="6" />
+      <line x1="4" x2="20" y1="12" y2="12" />
+      <line x1="4" x2="20" y1="18" y2="18" />
+    </svg>
+  </button>
+  
+
+
+
+
+
+
+  
+      <!-- NAVIGATION (dynamic based on login status) -->
+      <ul class="navbarNav">
+        {% if request.user.is_authenticated %}
+          <li class="navitem"><a class="navlink" href="{% url 'MyGuideHome' %}">My Guide Home</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'glutenExposure' %}">Gluten Exposure</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'dietary_intake' %}">Dietary Intake</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'recipes' %}">Recipes</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'community' %}">Community</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'health_profile' %}">Health Profile</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'logout' %}">Logout</a></li>
+          
+
+
+
+        {% else %}
+          <li class="navitem"><a class="navlink" href="{% url 'index' %}">Home</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'login' %}">Login</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'SignUp' %}">Sign Up</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'aboutus' %}">About Us</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+  
+
+  <div class="container">
+    
+    {% if messages %}
+    {% for message in messages %}
+
+    <div class="alert alert-{message.tags}">{{message}}</div>
+    {% endfor %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+
+  </div>
+ 
+   
+  
+  
+
+<script src="{% static 'js/script.js' %}"></script>
+
+<script>
+  const NavigationBar = document.getElementById("NavigationBar");
+  let lastScrollY = window.scrollY;
+
+  window.addEventListener("scroll", () => {
+    const currentScrollY = window.scrollY;
+
+    // Add background when scrolling down from top
+    if (currentScrollY > 15) {
+      NavigationBar.classList.add("scrolled");
+    } else {
+      NavigationBar.classList.remove("scrolled");
+    }
+
+    if (currentScrollY > 50) {
+      NavigationBar.classList.add("collapsed");
+    } else {
+      NavigationBar.classList.remove("collapsed");
+    }
+
+    lastScrollY = currentScrollY;
+  });
+</script>
+
+
+
+</body>
+
+
+</html>

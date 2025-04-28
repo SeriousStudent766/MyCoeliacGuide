@@ -1,0 +1,207 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+
+
+
+  </head>
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+
+<div class="section-divider"></div>
+
+
+
+<section class="video-hero">
+    <video autoplay loop muted playsinline>
+        <source src="{% static 'videos/4296854-uhd_3840_2160_25fps.mp4' %}" type="video/mp4">
+      </video>
+  
+    <div class="content-constraint">
+      <div class="content cta-hero">
+        <div style="text-align: center">
+          <h1>Live Well with Coeliac Disease</h1>
+          <h1>Track Gluten Intake & Symptoms</h1>
+          <h1>Connect, Learn & Thrive</h1>
+
+          
+        </div>
+        <div class="button-wrapper">
+          <a class="button-link" href="{% url 'SignUp' %}">
+            <i class='bx bx-group'></i> Join the Community
+          </a>
+          
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="mission-section">
+    <div class="animated-bg"></div> 
+    
+    <div class="mission-content">
+     
+      <div class="section-divider"></div>
+      <h2>Our Mission</h2>
+
+      <p>
+        At <strong>My Coeliac Guide</strong>, our mission is to empower individuals living with coeliac disease by giving them the tools, confidence, and community they need to take control of their health. We understand the daily challenges of maintaining a strict gluten-free lifestyle, and we’re here to make that journey easier and more manageable.
+      </p>
+      
+      <p>
+        Whether you're newly diagnosed or have been living with coeliac for years, our platform is designed to support you every step of the way. From logging your meals and tracking symptoms to accessing gluten-free recipes and engaging with a supportive community, we’ve built this space to help you live well — your way.
+      </p>
+      
+      <p>
+        We’re not just a tracking tool — we’re a companion on your journey. Our goal is to help reduce confusion, avoid gluten exposure, and promote better long-term health through simple, user-focused features. With My Coeliac Guide, you’re never navigating this path alone.
+      </p>
+      
+      <p>
+        Because managing coeliac disease shouldn’t be complicated — it should be empowering.
+      </p>
+      
+    
+  </section>
+  
+
+  <div class="section-spacer"></div>
+
+  <section class="testimonial-carousel">
+  
+    <h2 class="carousel-title">What Our Users Say</h2>
+  
+    <div class="carousel-container">
+      <button class="carousel-arrow left" onclick="scrollCarousel(-1)">‹</button>
+  
+      <div class="carousel-track" id="testimonialTrack">
+        <!-- Testimonial 1 -->
+
+
+        <div class="testimonial-card">
+          <img src="{% static 'images/Go7_IexXkAAnH7J.png' %}" alt="Happy gluten-free user">
+          <div class="testimonial-content">
+            <h3>“Peace of Mind, Finally.”</h3>
+            <p>“I used to worry every meal would trigger symptoms. Now, I know what works and what doesn’t.”</p>
+            <p class="attribution">– Jonathan, 40, Unhappily Married with 20 cats</p>
+            <a class="cta-button" href="{% url 'community' %}">Read More Stories</a>
+          </div>
+        </div>
+
+
+        <div class="testimonial-card">
+          <img src="{% static 'images/pexels-a1bda-31631885.jpg' %}" alt="Happy gluten-free user">
+          <div class="testimonial-content">
+            <h3>“I Finally Feel In Control.”</h3>
+            <p>“Before using My Coeliac Guide, I felt overwhelmed every time I ate. I was scared of getting sick again. But now, I can track everything I eat and feel empowered.”</p>
+            <p class="attribution">– Theo, 26, Gluten-Free For 2 Years</p>
+            <a class="cta-button" href="{% url 'community' %}">Read More Stories</a>
+          </div>
+        </div>
+  
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card">
+          <img src="{% static 'images/pexels-pavel-danilyuk-8526418.jpg' %}" alt="Happy gluten-free user">
+          <div class="testimonial-content">
+            <h3>“No More Guessing Games.”</h3>
+            <p>“Now I know exactly what triggers my symptoms. Logging everything has helped me stay on top of my health.”</p>
+            <p class="attribution">– Saaima, 30, Recently Diagnosed</p>
+            <a class="cta-button" href="{% url 'community' %}">Read More Stories</a>
+          </div>
+        </div>
+  
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card">
+          <img src="{% static 'images/IMG_7821.jpg' %}" alt="Happy gluten-free user">
+          <div class="testimonial-content">
+            <h3>“I’m Not Alone Anymore.”</h3>
+            <p>“The community feature made me feel supported. Sharing stories with others helped me stay committed.”</p>
+            <p class="attribution">– Syed MD Abidurrahman David Ali, 22, Gluten-Free Single Dad</p>
+            <a class="cta-button" href="{% url 'community' %}">Read More Stories</a>
+          </div>
+        </div>
+  
+        <!-- Testimonial 4 -->
+        <div class="testimonial-card">
+          <img src="{% static 'images/pexels-ralph-rabago-3214751.jpg' %}" alt="Happy gluten-free user">
+          <div class="testimonial-content">
+            <h3>“It’s My Daily Check-In.”</h3>
+            <p>“I love the ease of logging my meals and spotting patterns in my symptoms. It’s now part of my routine.”</p>
+            <p class="attribution">– Dheeman, 20, Coeliac Since 2020</p>
+            <a class="cta-button" href="{% url 'community' %}">Read More Stories</a>
+          </div>
+        </div>
+  
+        <!-- Testimonial 5 -->
+        <div class="testimonial-card">
+          <img src="{% static 'images/pexels-pixabay-415829.jpg' %}" alt="Happy gluten-free user">
+          <div class="testimonial-content">
+            <h3>“Gluten-Free Made Simple.”</h3>
+            <p>“Finding gluten-free recipes that actually taste good was hard — until now. This app changed that.”</p>
+            <p class="attribution">– Unamta, 21, Unemployed</p>
+            <a class="cta-button" href="{% url 'community' %}">Read More Stories</a>
+          </div>
+        </div>
+  
+        <!-- Testimonial 6 -->
+
+  
+        <!-- Testimonial 7 -->
+        <div class="testimonial-card">
+          <img src="{% static 'images/pexels-cottonbro-5791666.jpg' %}" alt="Happy gluten-free user">
+          <div class="testimonial-content">
+            <h3>“My Child’s Health Has Improved.”</h3>
+            <p>“Managing my daughter’s diet used to be stressful. This app helps us track everything — even minor symptoms.”</p>
+            <p class="attribution">– Mohul, Father of 8-Year-Old</p>
+            <a class="cta-button" href="{% url 'community' %}">Read More Stories</a>
+          </div>
+        </div>
+      </div>
+  
+      <button class="carousel-arrow right" onclick="scrollCarousel(1)">›</button>
+    </div>
+  </section>
+  </div>
+  
+  
+  
+  <section class="impact-block">
+    <div class="impact-content">
+      <h3>Support That Makes a Difference</h3>
+      <p>
+        We know that coeliac disease can feel isolating. That’s why we created a space where
+        people can learn, track, and connect — all in one place. Every feature is built with empathy and understanding.
+      </p>
+      <a class="cta-button" href="{% url 'aboutus' %}">Learn About Us</a>
+    </div>
+  </section>
+  
+  <div class="footer">
+    <p>&copy; 2025 My Coeliac Guide. All rights reserved.</p>
+  </div>
+
+
+
+
+
+
+  <script>
+    function scrollCarousel(direction) {
+      const track = document.getElementById('testimonialTrack');
+      const scrollAmount = 520; // width of each card + gap
+      track.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+    }
+  </script>
+  
+
+
+
+{% endblock %}

@@ -1,0 +1,160 @@
+/* === Health Profile Container === */
+* {
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .profile-form {
+        padding: 30px 20px;
+        max-width: 100%;
+    }
+}
+
+
+.health-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* leaves space for navbar */
+    padding-top: 80px;
+    background-color: #f2faee;
+    font-family: 'Poppins', sans-serif;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+/* === Profile View Card === */
+.profile-card {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    max-width: 420px;
+    text-align: center;
+    width: 100%;
+    transition: all 0.3s ease;
+    margin-top: 40px;
+}
+
+.profile-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card img,
+.profile-image img {
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid #e0e0e0;
+}
+
+.profile-card h2 {
+    font-size: 1.7rem;
+    color: #27391C;
+    margin: 15px 0 10px;
+}
+
+.profile-card p {
+    font-size: 1rem;
+    color: #444;
+    margin: 6px 0;
+    line-height: 1.4;
+}
+
+/* === Edit Form Section === */
+.profile-form {
+    background: #fff;
+    padding: 40px 60px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    max-width: 700px; /* wider width */
+    width: 100%;
+    margin: 0 auto; /* center it */
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.profile-form h2 {
+    text-align: center;
+    color: #27391C;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.profile-form input,
+.profile-form select {
+    width: 100%;
+    padding: 14px;
+    margin: 14px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+/* === Buttons === */
+.btn-edit,
+.btn-save,
+.btn-cancel {
+    background-color: #27391C;
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 18px;
+    width: 100%;
+}
+
+.btn-edit {
+    background-color: #f47b20;
+}
+
+.btn-edit:hover {
+    background-color: #d9681a;
+}
+
+.btn-save:hover,
+.btn-cancel:hover {
+    opacity: 0.9;
+}
+
+.btn-cancel {
+    background-color: #999;
+    margin-top: 10px;
+}
+
+/* === Unit Label Inside Input Row (Optional) === */
+.unit-group {
+    display: flex;
+    align-items: center;
+}
+
+.unit-group input {
+    flex: 1;
+}
+
+.unit {
+    margin-left: 8px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* === Responsive === */
+@media screen and (max-width: 768px) {
+    .health-wrapper {
+        flex-direction: column;
+        align-items: center;
+        padding-top: 100px;
+    }
+}
+
+/* === Animation Switch === */
+#edit-profile,
+#view-profile {
+    transition: opacity 0.3s ease;
+}
