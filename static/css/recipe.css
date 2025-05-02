@@ -1,7 +1,60 @@
+/* Recipes page container */
 .page-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    width: 100%;
-  }
-  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Meal Grid */
+.meal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Each Recipe Card */
+.meal-card {
+  background-color: #f9fff8;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+}
+
+.meal-card:hover {
+  transform: scale(1.02);
+}
+
+/* Meal Image */
+.meal-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+/* Meal Info Text */
+.meal-info {
+  padding: 1rem;
+  color: #27391C;
+  font-family: 'Nunito', sans-serif;
+}
+
+.meal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #18230F;
+}
+
+.meal-info p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.meal-category {
+  font-style: italic;
+  color: #4f6650;
+}
