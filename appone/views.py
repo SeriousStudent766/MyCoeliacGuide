@@ -124,7 +124,7 @@ def glutenExposure(request):
         'exposures': exposures
     })
 
-
+#everything above I COMMENTED
 
 
 

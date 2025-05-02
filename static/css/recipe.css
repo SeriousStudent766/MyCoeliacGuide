@@ -1,59 +1,127 @@
-/* Recipes page container */
 .page-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
-}
-
-/* Meal Grid */
-.meal-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-/* Each Recipe Card */
-.meal-card {
-  background-color: #f9fff8;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  transition: transform 0.2s ease-in-out;
-}
-
-.meal-card:hover {
-  transform: scale(1.02);
-}
-
-/* Meal Image */
-.meal-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-bottom: 1px solid #e6e6e6;
-}
-
-/* Meal Info Text */
-.meal-info {
-  padding: 1rem;
-  color: #27391C;
   font-family: 'Nunito', sans-serif;
 }
 
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #27391C;
+  margin-bottom: 1.5rem;
+}
+
+/* 1) LAYOUT GRID: filter (250px) + cards (rest) */
+.recipe-layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 2rem;
+}
+
+/* mobile: stack filter + cards */
+@media (max-width: 768px) {
+  .recipe-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* FILTER PANEL */
+.filter-form {
+  max-width: 250px;
+  background: #f2faee;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+.filter-form fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+.filter-form legend {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #27391C;
+}
+.filter-form label {
+  display: block;
+  margin-top: 0.5rem;
+  color: #27391C;
+}
+.form-check {
+  margin: 0.3rem 0;
+}
+.sort-dropdown {
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin: 0.5rem 0;
+}
+.btn.btn-primary {
+  background: #27391C;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.btn.btn-primary:hover {
+  background: #4f6650;
+}
+
+/* 2) CARDS GRID: 3 cols → 2 cols → 1 col */
+.meal-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 1200px) {
+  .meal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .meal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CARD STYLING */
+.meal-card {
+  background: #f9fff8;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.meal-card:hover {
+  transform: scale(1.02);
+}
+.meal-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #e6e6e6;
+}
+.meal-info {
+  padding: 1rem;
+  color: #27391C;
+}
 .meal-title {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: #18230F;
 }
-
 .meal-info p {
   margin: 0.3rem 0;
   font-size: 0.95rem;
-  line-height: 1.4;
 }
-
 .meal-category {
   font-style: italic;
   color: #4f6650;
