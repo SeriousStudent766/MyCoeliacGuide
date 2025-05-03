@@ -1,0 +1,56 @@
+{# templates/favorites_list.html #}
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block title %}My Favorites{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/recipes.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+    <div class="page-header">
+      <h1 class="recipe-title">My Favorite Recipes</h1>
+      <a href="{% url 'recipes' %}" class="back2-btn">← Back to All Recipes</a>
+    </div>
+
+    <div class="hero">
+      <img src="{{ recipe.image.url }}" class="hero-image" alt="{{ recipe.name }}">
+    </div>
+
+
+
+
+
+ 
+
+  <div class="meal-grid">
+    {% for meal in meals %}
+      <div class="meal-card">
+        <a href="{% url 'recipe_detail' meal.id %}">
+          <img src="{{ meal.image.url|default:'https://via.placeholder.com/400' }}"
+               class="meal-image" alt="{{ meal.name }}">
+        </a>
+        <div class="meal-info">
+          <h5 class="meal-title">{{ meal.name }}</h5>
+          <p class="meal-category">
+            <strong>Category:</strong>
+            {% for c in meal.categories.all %}
+              {{ c.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </p>
+          <p><strong>Calories:</strong> {{ meal.calories }}</p>
+          <p><strong>Protein:</strong> {{ meal.protein }}g</p>
+          <p><strong>Carbs:</strong> {{ meal.carbs }}g</p>
+          <p><strong>Fats:</strong> {{ meal.fats }}g</p>
+          <p><strong>Fibre:</strong> {{ meal.fibre }}g</p>
+        </div>
+      </div>
+    {% empty %}
+      <p>You haven’t favorited any recipes yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

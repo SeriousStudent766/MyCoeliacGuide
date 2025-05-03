@@ -21,7 +21,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 
 from .forms import RecipeFilter
-from .models import Recipe, Category
+from .models import Recipe, Category, FavouriteRecipe
 from . import views
 from .models import Comment, ViewedMeal
 from datetime import datetime, date
@@ -364,10 +364,21 @@ def recipe_page(request):
     elif sort_by == 'low_carbs':
         recipes = recipes.order_by('carbs')
 
-    # DEBUGGING LINE — see if it's working
-    print("Recipes showing:", recipes.count())
+        fav_ids = []
+    if request.user.is_authenticated:
+        fav_qs    = FavouriteRecipe.objects.filter(user=request.user)
+        fav_ids   = fav_qs.values_list('recipe_id', flat=True)
+        fav_count = fav_qs.count()
+    else:
+        fav_ids   = []
+        fav_count = 0
 
-    return render(request, 'recipes.html', {'form': form, 'meals': recipes})
+    return render(request, 'recipes.html', {
+        'form':       form,
+        'meals':      recipes,
+        'fav_ids':    set(fav_ids),
+        'fav_count':  fav_count,
+    })
 
 
 
@@ -391,20 +402,54 @@ def recipe_detail(request, recipe_id):
     if not created:
         viewed_meal.viewed_at = now()
         viewed_meal.save()
+        
+
+        recipes = Recipe.objects.all()  # or filtered
+
+    if request.user.is_authenticated:
+        fav_ids = set(
+            FavouriteRecipe.objects
+                           .filter(user=request.user)
+                           .values_list('recipe_id', flat=True)
+        )
+    else:
+        fav_ids = set()
 
     return render(request, 'recipe_detail.html', {
         'recipe': recipe,
         'comments': comments,   
+        'fav_ids': fav_ids,
     })
 
 
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def toggle_favorite(request, recipe_id):
+    from .models import FavouriteRecipe, Recipe
+
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    fav, created = FavouriteRecipe.objects.get_or_create(
+        user=request.user,
+        recipe=recipe
+    )
+    if not created:
+        # already existed → unfavorite
+        fav.delete()
+    return redirect(request.META.get('HTTP_REFERER','/'))
 
 
 
 
 
-
-
-
-
-
+@login_required
+def favorites_list(request):
+    # grab all FavouriteRecipe for this user
+    fav_qs   = FavouriteRecipe.objects.filter(user=request.user).select_related('recipe')
+    # extract the Recipe objects
+    recipes  = [fav.recipe for fav in fav_qs]
+    return render(request, 'favorites_list.html', {
+        'meals': recipes,
+        'fav_count': fav_qs.count(),
+    })

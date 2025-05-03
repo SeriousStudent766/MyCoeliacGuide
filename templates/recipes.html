@@ -1,3 +1,4 @@
+{# templates/recipes.html #}
 {% extends 'navbar.html' %}
 {% load static %}
 
@@ -9,25 +10,46 @@
 
 
 <div class="page-wrapper">
-  <h1 class="page-title">All Recipes</h1>
+  <h1 class="page-title2">All Recipes</h1>
   <div class="recipe-layout">
 
  
 
     <form method="get" class="filter-form">
-      <fieldset>
-        <legend>Filter &amp; Sort Recipes</legend>
-
-        <label><strong>Categories:</strong></label>
+      <h2 class="filter-title">Filter &amp; Sort Recipes</h2>
+    
+      <div class="filter-group">
+        <h3>Category</h3>
         <div class="category-filter">
           {% for box in form.category_choices %}
-            <div class="form-check">
+            <label class="form-check">
               {{ box.tag }} {{ box.choice_label }}
-            </div>
+            </label>
           {% endfor %}
         </div>
+      </div>
 
-        <label for="sort_by"><strong>Sort by:</strong></label>
+      <div class="filter-group">
+        <h3>Favorited</h3>
+        {% if user.is_authenticated %}
+          {% if fav_count %}
+            <p>You’ve favorited <strong>{{ fav_count }}</strong> recipe{{ fav_count|pluralize }}.</p>
+            <a href="{% url 'favorites_list' %}" class="fav-link">View all favorites →</a>
+          {% else %}
+            <p>No favorites yet.</p>
+          {% endif %}
+        {% else %}
+          <p><em>Login to save favorites.</em></p>
+        {% endif %}
+      </div>
+      
+
+
+
+    
+      <div class="filter-group">
+        
+        <h3>Sort By</h3>
         <select name="sort_by" id="sort_by" class="sort-dropdown">
           <option value="">-- Select --</option>
           <option value="calories">Calories</option>
@@ -36,15 +58,27 @@
           <option value="low_fat">Low Fat</option>
           <option value="low_carbs">Low Carbs</option>
         </select>
-
-        <button type="submit" class="btn btn-primary">Apply</button>
-      </fieldset>
+      </div>
+    
+      <button type="submit" class="btn btn-primary">Apply</button>
     </form>
+    
 
     <!-- RIGHT: MEAL CARDS -->
     <div class="meal-grid">
       {% for meal in meals %}
         <div class="meal-card">
+          {# STAR FORM #}
+      <form method="post" action="{% url 'toggle_favorite' meal.id %}" class="fav-form">
+        {% csrf_token %}
+        <button type="submit" class="star-btn">
+          {% if meal.id in fav_ids %}
+            ★
+          {% else %}
+            ☆
+          {% endif %}
+        </button>
+      </form>
           <a href="{% url 'recipe_detail' meal.id %}">
             {% if meal.image %}
               <img src="{{ meal.image.url }}" class="meal-image" alt="{{ meal.name }}">

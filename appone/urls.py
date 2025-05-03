@@ -11,13 +11,18 @@ urlpatterns = [
     path('SignUp/', views.SignUp, name='SignUp'),
     path('aboutus/', views.aboutus, name='aboutus'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+
     path('MyGuideHome/', views.MyGuideHome, name='MyGuideHome'),
     path('logout/', views.logout_view, name='logout'),
     path('community/', views.community, name='community'),
     path('health_profile/', views.health_profile, name='health_profile'),
     path('glutenExposure/', views.glutenExposure, name='glutenExposure'),
+
     path('recipes/', views.recipe_page, name='recipes'),
     path('recipe/<int:recipe_id>/', views.recipe_detail, name='recipe_detail'),
+    path('recipe/<int:recipe_id>/favorite/', views.toggle_favorite, name='toggle_favorite'),
+    path('recipes/favorites/', views.favorites_list, name='favorites_list'),
+
     path('dietary-intake/', views.dietary_intake, name='dietary_intake'),
     path('dietary-history/', views.dietary_history, name='dietary_history'),
     path('dietary-history/<str:date>/', views.view_day_logs, name='view_day_logs'),

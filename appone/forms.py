@@ -14,6 +14,16 @@ class UserSignUpForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2'] # shows what to include in the signup form
 
+class HealthProfileForm(forms.ModelForm):
+    class Meta:
+        model = HealthProfile
+        fields = '__all__'
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={
+                'type': 'date', 
+                'class': 'form-control' 
+            }),
+        }
 
 
 
@@ -30,16 +40,6 @@ class FoodLogForm(forms.ModelForm):
 
 
 
-class HealthProfileForm(forms.ModelForm):
-    class Meta:
-        model = HealthProfile
-        fields = '__all__'
-        widgets = {
-            'date_of_birth': forms.DateInput(attrs={
-                'type': 'date', 
-                'class': 'form-control' 
-            }),
-        }
 
 
 class RecipeFilter(forms.Form):

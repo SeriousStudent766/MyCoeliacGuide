@@ -28,33 +28,6 @@
   }
   
 
-  .filter-form {
-    background: #f2faee;
-    padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-  }
-  .filter-form fieldset {
-    border: none; margin:0; padding:0;
-  }
-  .filter-form legend {
-    font-weight:600; color:#27391C; margin-bottom:.5rem;
-  }
-  .filter-form label {
-    display:block; margin-top:.5rem; color:#27391C;
-  }
-  .form-check { margin:.3rem 0; }
-  .sort-dropdown {
-    width:100%; padding:.4rem; border:1px solid #ccc;
-    border-radius:5px; margin:.5rem 0;
-  }
-  .btn-primary {
-    background:#27391C; color:#fff; padding:.5rem 1rem;
-    border:none; border-radius:6px; font-weight:bold;
-    cursor:pointer;
-  }
-  .btn-primary:hover { background:#4f6650; }
-
 
   .meal-grid {
     display:grid;
@@ -70,6 +43,8 @@
 
 
   .meal-card {
+    position: relative;
+
     background:#f9fff8; border-radius:16px;
     box-shadow:0 6px 18px rgba(0,0,0,0.05);
     overflow:hidden; transition:transform .2s ease;
@@ -90,3 +65,250 @@
   .meal-category {
     font-style:italic; color:#4f6650;
   }
+
+
+ 
+
+  .fav-form {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+  }
+
+
+.star-btn {
+    background: rgba(255,255,255,0.9);
+    border: none;
+    font-size: 2.4rem;         
+    line-height: 1;
+    color: #ffc107;          
+    cursor: pointer;
+    border-radius: 0.3rem;
+    padding: 0.4rem 0.6rem;    
+    transition: transform 150ms, background 150ms;
+  }
+  
+  .star-btn:hover {
+    background: white;
+    transform: scale(1.1);
+  }
+  
+
+  .star-btn.favorited {
+    color: #ffb300;
+  }
+  
+  /* recipes.css */
+
+/* Sidebar container */
+.filter-form {
+    background: #f9fff8;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  
+  /* Main title */
+  .filter-title {
+    margin: 0 0 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: #2a3d27;
+    border-bottom: 2px solid #e0f0dc;
+    padding-bottom: 0.25rem;
+  }
+  
+  /* Each filter section */
+  .filter-group {
+    margin-top: 1.5rem;
+  }
+  .filter-group:first-of-type {
+    margin-top: 0;
+  }
+  
+  /* Group headings */
+  .filter-group h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #27391C;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid #e0f0dc;
+    padding-bottom: 0.25rem;
+  }
+
+  .filter-group p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #18230F;
+  }
+  
+  /* Category checkboxes */
+  .form-check {
+    display: flex;
+    align-items: center;
+    margin: 0.4rem 0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #18230F;
+  }
+  .form-check input[type="checkbox"] {
+    margin-right: 0.5rem;
+    accent-color: #2a3d27; /* modern green check */
+    width: 1.1em;
+    height: 1.1em;
+  }
+  
+  /* Sort dropdown */
+  .sort-dropdown {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #d0e0c8;
+    border-radius: 6px;
+    background: white;
+    color: #18230F;
+    font-size: 0.95rem;
+    transition: border-color 150ms;
+  }
+  .sort-dropdown:focus {
+    outline: none;
+    border-color: #27391C;
+  }
+  
+  /* Apply button */
+  .btn-primary {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    background: #27391C;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.65rem 0;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 150ms, transform 150ms;
+  }
+  .btn-primary:hover {
+    background: #2e4b2e;
+    transform: translateY(-1px);
+  }
+  
+  /* Divider between filter and grid in your layout */
+  .recipe-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 768px) {
+    .recipe-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .fav-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #2a3d27;
+    text-decoration: underline;
+    transition: color 150ms;
+  }
+  .fav-link:hover {
+    color: #27391C;
+  }
+
+
+  
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;   
+    margin-top: 11rem; 
+  }
+  
+  
+  .page-header .recipe-title {
+    margin: 0;
+    flex-shrink: 1;   
+  }
+  
+
+  .back2-btn {
+
+    margin: 0;
+    /* margin-top: 10rem; */
+    background-color:  #27391C;
+    border-radius: 100px;
+    box-shadow:
+    rgba(39, 57, 28, .2) 0 -25px 18px -14px inset,
+    rgba(39, 57, 28, .15) 0 1px 2px,
+    rgba(39, 57, 28, .15) 0 2px 4px,
+    rgba(39, 57, 28, .15) 0 4px 8px,
+    rgba(39, 57, 28, .15) 0 8px 16px,
+    rgba(39, 57, 28, .15) 0 16px 32px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .back2-btn:hover {
+      box-shadow:
+      rgba(39, 57, 28, .35) 0 -25px 18px -14px inset,
+      rgba(39, 57, 28, .25) 0 1px 2px,
+      rgba(39, 57, 28, .25) 0 2px 4px,
+      rgba(39, 57, 28, .25) 0 4px 8px,
+      rgba(39, 57, 28, .25) 0 8px 16px,
+      rgba(39, 57, 28, .25) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 4rem;
+    color: #18230F;      
+    margin: 1.5rem 0;    
+    /* margin-top: 15rem; */
+    text-align: left;
+    text-transform: capitalize; 
+  }
+
+
+  .page-title2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 4rem;
+    color: #18230F;      
+    margin: 1.5rem 0;    
+    margin-top: 10rem; 
+    text-align: center;
+    text-transform: capitalize; 
+
+  }
+
+
+
+
+  .recipe-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 3rem;    
+    color: #18230F;
+    margin: 0;         
+    text-transform: capitalize;
+  }
+  
