@@ -393,9 +393,10 @@ def recipe_detail(request, recipe_id):
         viewed_meal.save()
 
     return render(request, 'recipe_detail.html', {
-        'meal': recipe,
-        'comments': comments
+        'recipe': recipe,
+        'comments': comments,   
     })
+
 
 
 

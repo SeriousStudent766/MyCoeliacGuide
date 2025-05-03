@@ -8,18 +8,15 @@
 
 
 
-
-<link rel="stylesheet" href="{% static 'css/recipes.css' %}">
-
-
 <div class="page-wrapper">
-  <h1 class="page-title">All Meals</h1>
-
+  <h1 class="page-title">All Recipes</h1>
   <div class="recipe-layout">
-    <!-- LEFT: FILTER -->
+
+ 
+
     <form method="get" class="filter-form">
       <fieldset>
-        <legend>Filter & Sort Meals</legend>
+        <legend>Filter &amp; Sort Recipes</legend>
 
         <label><strong>Categories:</strong></label>
         <div class="category-filter">
@@ -44,7 +41,7 @@
       </fieldset>
     </form>
 
-    <!-- RIGHT: CARDS -->
+    <!-- RIGHT: MEAL CARDS -->
     <div class="meal-grid">
       {% for meal in meals %}
         <div class="meal-card">
@@ -72,6 +69,8 @@
         </div>
       {% endfor %}
     </div>
+
   </div>
 </div>
+
 {% endblock %}

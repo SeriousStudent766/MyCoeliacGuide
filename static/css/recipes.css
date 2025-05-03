@@ -1,0 +1,92 @@
+
+.page-wrapper {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: 'Nunito', sans-serif;
+  }
+  .page-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #27391C;
+    margin-bottom: 1.5rem;
+    margin-top: 10rem;
+  }
+
+  
+
+.recipe-layout {
+    margin-top: 5rem;   
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+  }
+  @media (max-width:768px) {
+    .recipe-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+
+  .filter-form {
+    background: #f2faee;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  }
+  .filter-form fieldset {
+    border: none; margin:0; padding:0;
+  }
+  .filter-form legend {
+    font-weight:600; color:#27391C; margin-bottom:.5rem;
+  }
+  .filter-form label {
+    display:block; margin-top:.5rem; color:#27391C;
+  }
+  .form-check { margin:.3rem 0; }
+  .sort-dropdown {
+    width:100%; padding:.4rem; border:1px solid #ccc;
+    border-radius:5px; margin:.5rem 0;
+  }
+  .btn-primary {
+    background:#27391C; color:#fff; padding:.5rem 1rem;
+    border:none; border-radius:6px; font-weight:bold;
+    cursor:pointer;
+  }
+  .btn-primary:hover { background:#4f6650; }
+
+
+  .meal-grid {
+    display:grid;
+    gap:1.5rem;
+    grid-template-columns:repeat(3,1fr);
+  }
+  @media (max-width:1200px) {
+    .meal-grid { grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:768px) {
+    .meal-grid { grid-template-columns:1fr; }
+  }
+
+
+  .meal-card {
+    background:#f9fff8; border-radius:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    overflow:hidden; transition:transform .2s ease;
+  }
+  .meal-card:hover { transform:scale(1.02); }
+  .meal-image {
+    width:100%; height:200px; object-fit:cover;
+    border-bottom:1px solid #e6e6e6;
+  }
+  .meal-info { padding:1rem; color:#27391C; }
+  .meal-title {
+    font-size:1.2rem; font-weight:700; margin-bottom:.5rem;
+    color:#18230F;
+  }
+  .meal-info p {
+    margin:.3rem 0; font-size:.95rem; line-height:1.4;
+  }
+  .meal-category {
+    font-style:italic; color:#4f6650;
+  }

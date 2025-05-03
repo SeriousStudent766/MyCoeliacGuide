@@ -26,6 +26,10 @@
 
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+  <link rel="stylesheet" href="{% static 'css/recipes.css' %}">
+
+  
+
 
 
  
@@ -33,7 +37,7 @@
 
 
     <title> {%block title%}My site{%endblock%}</title>
-
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
