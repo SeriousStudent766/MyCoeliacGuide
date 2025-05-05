@@ -47,12 +47,12 @@
         </div>
       </form>
 
-      <!-- Thread List -->
+     
       <div class="thread-list">
         {% for comment in community %}
           <div class="comment-thread">
 
-            <!-- Main Comment Box -->
+            <!-- main comments -->
             <div class="comment-box">
               <div class="post-header">
                 <img src="{% if comment.user.healthprofile.profile_picture %}{{ comment.user.healthprofile.profile_picture.url }}{% else %}{{ default_avatar }}{% endif %}"
@@ -92,9 +92,9 @@
                 </form>
               </div>
             </div>
-            <!-- /.comment-box -->
+         
 
-            <!-- Replies + Reply Form -->
+            <!-- Replies and Reply Form -->
             <div class="reply-section">
 
               <!-- Toggle Replies Button -->
@@ -160,11 +160,14 @@
           <p class="no-threads">No discussions yet. Be the first to share!</p>
         {% endfor %}
       </div>
-      <!-- /.thread-list -->
+    
     </div>
   </div>
-  <!-- /.forum-wrapper -->
 
+  <div class="footer">
+    <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
+  </div>
+  
   <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {

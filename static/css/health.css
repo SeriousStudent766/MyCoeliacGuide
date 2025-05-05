@@ -1,160 +1,286 @@
-/* === Health Profile Container === */
-* {
+/* health.css */
+
+:root {
+    --primary-color:    #2e7d32;
+    --secondary-color:  #f9fbe7;
+    --accent-color:     #1e88e5;
+    --text-color:       #444;
+    --heading-font:     'Playfair Display', serif;
+    --body-font:        'Poppins', sans-serif;
+    --card-bg:          #fff;
+    --radius:           1rem;
+    --transition:       0.3s ease;
+  }
+  
+  * {
     box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-    .profile-form {
-        padding: 30px 20px;
-        max-width: 100%;
-    }
-}
-
-
-.health-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: var(--body-font);
+    color: var(--text-color);
+  }
+  
+  /* Wrapper */
+  .health-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 80px); /* leaves space for navbar */
-    padding-top: 80px;
-    background-color: #f2faee;
-    font-family: 'Poppins', sans-serif;
+    align-items: flex-start;
     flex-wrap: wrap;
-    gap: 40px;
-}
-
-/* === Profile View Card === */
-.profile-card {
-    background: #fff;
-    padding: 40px 30px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    max-width: 420px;
+    gap: 2.5rem;
+    padding: 5rem 1rem;
+    background: var(--secondary-color);
+  }
+  
+  /* Profile Card */
+  .profile-card {
+    background: var(--card-bg);
+    width: 400px;
+    padding: 4rem 3rem;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     text-align: center;
-    width: 100%;
-    transition: all 0.3s ease;
-    margin-top: 40px;
-}
-
-.profile-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-}
-
-.profile-card img,
-.profile-image img {
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .profile-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  }
+  
+  /* Avatar */
+  .profile-image img,
+  .avatar-placeholder {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
     border-radius: 50%;
-    width: 140px;
-    height: 140px;
-    object-fit: cover;
-    margin-bottom: 15px;
-    border: 3px solid #e0e0e0;
-}
-
-.profile-card h2 {
-    font-size: 1.7rem;
-    color: #27391C;
-    margin: 15px 0 10px;
-}
-
-.profile-card p {
-    font-size: 1rem;
-    color: #444;
-    margin: 6px 0;
-    line-height: 1.4;
-}
-
-/* === Edit Form Section === */
-.profile-form {
-    background: #fff;
-    padding: 40px 60px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-    max-width: 700px; /* wider width */
-    width: 100%;
-    margin: 0 auto; /* center it */
-    font-family: 'Poppins', sans-serif;
-}
-
-
-.profile-form h2 {
-    text-align: center;
-    color: #27391C;
-    margin-bottom: 30px;
-    font-size: 2rem;
-}
-
-.profile-form input,
-.profile-form select {
-    width: 100%;
-    padding: 14px;
-    margin: 14px 0;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-}
-
-/* === Buttons === */
-.btn-edit,
-.btn-save,
-.btn-cancel {
-    background-color: #27391C;
-    color: white;
-    border: none;
-    padding: 14px 25px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 18px;
-    width: 100%;
-}
-
-.btn-edit {
-    background-color: #217710;
-}
-
-.btn-edit:hover {
-    background-color: #016306;
-}
-
-.btn-save:hover,
-.btn-cancel:hover {
-    opacity: 0.9;
-}
-
-.btn-cancel {
-    background-color: #999;
-    margin-top: 10px;
-}
-
-/* === Unit Label Inside Input Row (Optional) === */
-.unit-group {
+    border: 4px solid var(--accent-color);
+    background: var(--secondary-color);
     display: flex;
     align-items: center;
-}
-
-.unit-group input {
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--accent-color);
+  }
+  
+  /* Name */
+  .profile-card h2 {
+    font-family: var(--heading-font);
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Details List */
+  .profile-details {
+    list-style: none;
+    max-width: 280px;
+    margin: 0 auto 2rem;
+    padding: 0;
+    text-align: left;
+    line-height: 1.8;
+  }
+  .profile-details li {
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+  }
+  .profile-details li strong {
+    display: inline-block;
+    width: 90px;
+    font-weight: 600;
+  }
+  
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition);
+  }
+  
+  .btn-edit {
+    background: var(--accent-color);
+    color: #fff;
+  }
+  .btn-edit:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Edit Form */
+  .profile-form {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 500px;
+    padding: 3.5rem 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+  .profile-form.show {
+    display: block;
+    opacity: 1;
+  }
+  
+  .profile-form h2 {
+    font-family: var(--heading-font);
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+  }
+  
+  .form-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .profile-form input,
+  .profile-form select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    font-size: 1rem;
+  }
+  
+  .profile-form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .btn-save {
+    background: #009688;
+    color: #fff;
     flex: 1;
-}
-
-.unit {
-    margin-left: 8px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-/* === Responsive === */
-@media screen and (max-width: 768px) {
+  }
+  .btn-save:hover {
+    transform: translateY(-1px);
+  }
+  
+  .btn-cancel {
+    background: #aaa;
+    color: #fff;
+    flex: 1;
+  }
+  .btn-cancel:hover {
+    opacity: 0.9;
+  }
+  
+  /* Fade Animations */
+  .fade-in {
+    animation: fadeIn var(--transition) forwards;
+  }
+  .fade-out {
+    animation: fadeOut var(--transition) forwards;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
     .health-wrapper {
-        flex-direction: column;
-        align-items: center;
-        padding-top: 100px;
+      flex-direction: column;
+      padding: 2rem 1rem;
     }
-}
+    .profile-card,
+    .profile-form {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+  
+  /* -- Form grid & pills for diet.css -- */
 
-/* === Animation Switch === */
-#edit-profile,
-#view-profile {
-    transition: opacity 0.3s ease;
-}
+.meal-form .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .meal-form .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .meal-form .form-group.full {
+    grid-column: 1 / -1;
+  }
+  
+  /* Label styling */
+  .meal-form label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #2c3e50;
+  }
+  
+  /* Pill-shaped inputs */
+  .meal-form input,
+  .meal-form select {
+    height: 2.5rem;
+    padding: 0 1rem;
+    border: 1px solid #ccc;
+    border-radius: 1.25rem;
+    font-size: 1rem;
+    background: #fff;
+    transition: border-color 0.2s;
+  }
+  
+  /* Focus state */
+  .meal-form input:focus,
+  .meal-form select:focus {
+    outline: none;
+    border-color: #4caf50;
+  }
+  
+  /* Checkbox inline */
+  .gluten-field {
+    align-items: center;
+  }
+  .gluten-field input {
+    width: auto;
+    margin-left: 0.5rem;
+  }
+  
+  /* Submit button matches deposit style */
+  .btn-deposit {
+    width: 100%;
+    height: 2.5rem;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-deposit:hover {
+    background-color: #43a047;
+  }
+  
+  /* Wrap the form in its own card if you like */
+  .log-form {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  

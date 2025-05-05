@@ -344,8 +344,9 @@ body {
   }
   
   .testimonial-image img {
-    width: 100%;
-    max-width: 400px;
+    width: 60px; height: 60px;
+    
+    max-width: 200px;
     border-radius: 8px;
   }
   
@@ -746,4 +747,91 @@ body {
         color: #664d03;
     }
   
-  
+ 
+/* General section styles */
+.webContent {
+  font-family: 'Arial', sans-serif;
+  padding: 40px;
+  color: #333;
+  position: relative;
+  background-color: #f7f9fc;
+}
+
+/* Animated background layer */
+.animated-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(120deg, #c0d6df, #f3faff);
+  opacity: 0.4;
+  z-index: -1;
+  animation: bgAnimation 15s infinite alternate;
+}
+
+@keyframes bgAnimation {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+
+/* Content container styling */
+.content-inner {
+  max-width: 800px;
+  margin: auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.section-divider {
+  width: 60px;
+  height: 4px;
+  background: #6a9ac4;
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+/* Headings styling */
+h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #005691;
+}
+
+/* Paragraphs styling */
+p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+/* Lists styling */
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+
+ul li {
+  padding: 6px 0;
+  font-size: 15px;
+  line-height: 1.4;
+  position: relative;
+  padding-left: 25px;
+}
+
+ul li::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: #005691;
+  font-size: 20px;
+  line-height: 15px;
+}
+
+.symptom-list li strong {
+  color: #d9534f;
+}

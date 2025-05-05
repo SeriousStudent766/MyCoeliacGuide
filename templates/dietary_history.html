@@ -6,10 +6,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="diet-wrapper">
-    <button class="nav-arrow left">❮</button>
-    <button class="nav-arrow right">❯</button>
-    
-  <h2>📊 View Past Intake</h2>
 
   <!-- Timeframe Filter -->
   <div class="filter-controls">
@@ -54,7 +50,6 @@
 {% endfor %}
 
 
-
 <script>
   // Init charts
   document.querySelectorAll('.chart').forEach((canvas, i) => {
@@ -91,4 +86,8 @@
     });
   });
 </script>
+
+<div class="footer">
+  <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
+</div>
 {% endblock %}

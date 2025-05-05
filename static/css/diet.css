@@ -1,186 +1,195 @@
-/* Diet page main wrapper */
-.diet-wrapper {
-  width: 100%;
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem;
-  padding-top: 80px;  /* 👈 ADDED this line */
-  background-color: #f4fbf4; 
+:root {
+  --bg-light:       #f4fbf4;
+  --bg-white:       #fff;
+  --radius:         0.75rem;
+  --spacing:        1.25rem;
+  --input-height:   2.5rem;
+  --font-body:      'Poppins', sans-serif;
+  --font-heading:   'Playfair Display', serif;
+  --color-text:     #333;
+  --color-accent:   #4caf50;
+  --color-accent-d: #43a047;
+  --color-muted:    #777;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  /* Headers */
-.diet-wrapper h2,
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--bg-light);
+}
+
+/* Wrapper & Headings */
+.diet-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+.diet-wrapper h2 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
 .diet-wrapper h3 {
-  color: #2c3e50;
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  color: var(--color-text);
   margin-bottom: 1rem;
 }
-  
 
-/* Summary section */
-.summary-card {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .summary-card,
-  .log-form,
-  .meal-logs {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  }
-
-.macros p {
-  margin: 0.3rem 0;
-  font-size: 0.95rem;
+/* Cards */
+.summary-card,
+.log-form,
+.meal-logs {
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: var(--spacing);
+  margin-bottom: 2rem;
 }
 
-/* Form layout */
-.log-form {
-    margin-bottom: 2rem;
-  }
-  
-  form .btn-save {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  form .btn-save:hover {
-    background-color: #43a047;
-  }
+/* Chart + Macros */
+.chart-wrapper {
+  max-width: 320px;
+  margin: 0 auto 1.5rem;
+}
+.macros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  justify-content: center;
+}
+.macros p {
+  margin: 0;
+  font-weight: 500;
+  color: var(--color-muted);
+}
 
+/* Form grid */
+.meal-form .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing);
+  margin-bottom: var(--spacing);
+}
+.meal-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+.meal-form .form-group.full {
+  grid-column: 1 / -1;
+}
+.meal-form label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+.meal-form input,
+.meal-form select {
+  height: var(--input-height);
+  padding: 0 1rem;
+  border: 1px solid #ccc;
+  border-radius: 1.25rem;
+  font-size: 1rem;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+.meal-form input:focus,
+.meal-form select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+.gluten-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  grid-column: 1 / -1;
+}
+.gluten-field input {
+  width: auto;
+  margin: 0;
+}
 
-  .log-form form label {
-    display: block;
-    font-weight: bold;
-    margin: 0.5rem 0 0.2rem;
+/* Submit */
+.btn-deposit {
+  grid-column: 1 / -1;
+  height: var(--input-height);
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-deposit:hover {
+  background: var(--color-accent-d);
+}
+
+/* Meal entries */
+.meal-entry {
+  padding: 1rem;
+  border-left: 4px solid var(--color-accent);
+  border-radius: 0.25rem;
+  background: #f9fdfa;
+  margin-bottom: 1rem;
+}
+.meal-entry h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.meal-entry p {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 0.5rem;
+  background: #e0e0e0;
+  color: #333;
+}
+.badge.gluten-free {
+  background: #d4edda;
+  color: #256029;
+}
+
+/* History button */
+.btn-history {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-white);
+  color: var(--color-text);
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s;
+  margin: 0 auto;
+}
+.btn-history:hover {
+  background: #f0f0f0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .meal-form .form-grid {
+    grid-template-columns: 1fr;
   }
-  
-  .log-form input,
-  .log-form select {
-    width: 100%;
-    padding: 0.4rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-
-
-
-  .meal-entry {
-    margin-bottom: 1rem;
-    padding: 0.75rem;
-    border-left: 5px solid #4CAF50;
-    background-color: #f4fdf4;
-    border-radius: 5px;
-  }
-  
-  .badge {
-    display: inline-block;
-    padding: 3px 8px;
-    font-size: 0.8rem;
-    border-radius: 3px;
-    background-color: #e0e0e0;
-    color: #333;
-  }
-  
-  .badge.gluten-free {
-    background-color: #d4edda;
-    color: #256029;
-  }
-
-
-  /* Meal logs display */
-.meal-logs .meal-entry {
-    border-top: 1px solid #e0e0e0;
-    padding: 0.8rem 0;
-  }
-
+  .btn-deposit,
   .btn-history {
-    display: inline-block;
-    background-color: #f0f0f0;
-    color: #333;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: center;
   }
-  
-  .btn-history:hover {
-    background-color: #e0e0e0;
-  }
-  
-
-  .chart-wrapper {
-    max-width: 300px;
-    margin: 0 auto;
-  }
-  
-  .chart-wrapper canvas {
-    height: auto !important;
-    max-height: 300px;
-  }
-  
-  .chart-and-meals {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .chart-wrapper {
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
-  }
-  
-  .meal-summary {
-    flex: 1;
-    min-width: 300px;
-  }
-  
-  .meal-summary p {
-    margin-bottom: 0.4rem;
-  }
-  
-  .filter-controls {
-    text-align: right;
-    margin-bottom: 1rem;
-  }
-  
-  .day-summary-card {
-    background: white;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  }
-  
-  .day-title {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .day-chart-info {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  
-  .day-chart-info canvas {
-    width: 180px !important;
-    height: 180px !important;
-  }
-  
+}

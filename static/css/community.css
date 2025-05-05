@@ -152,15 +152,7 @@
     margin-bottom: var(--space-lg);
   }
   
-  .comment-box {
-    position: relative;
-    background: #f9fdfb;
-    padding: var(--space-md);
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
-    
-  }
+ 
   
   /* Header (avatar + inline meta) */
   .post-header {
@@ -170,7 +162,7 @@
     margin-bottom: var(--space-sm);
   }
   .avatar {
-    width: 40px; height: 40px;
+    width: 60px; height: 60px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
@@ -202,14 +194,27 @@
   }
 
 
-  /* Uniform main image */
+  
   .post-image {
-    width: 200px; height: 200px;
+    width: 250px; height: 250px;
     object-fit: cover;
     border-radius: var(--radius);
     border: 1px solid #ddd;
     box-shadow: var(--shadow-sm);
-    margin-bottom: var(--space-sm);
+    margin-top: var(--space-sm);
+    object-fit: cover;
+
+  }
+
+  .comment-box {
+    grid-template-columns: 50px 1fr auto;
+    position: relative;
+    background: #f9fdfb;
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+
   }
   
   /* ========================================================================== 
@@ -340,14 +345,14 @@
    Replies wrapper
    ====================================================== */
    .reply-section {
-    background: #f5fdf7;                /* light green‐ish background */
+    background: #f5fdf7;              
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     padding: var(--space-md);
     margin-top: var(--space-sm);
   }
   
-  /* space out the toggle and form inside it */
+  
   .reply-section .toggle-replies {
     display: block;
     margin-bottom: var(--space-sm);
@@ -360,4 +365,3 @@
   .reply-section .reply-form {
     margin-top: var(--space-sm);
   }
-  

@@ -14,90 +14,85 @@
 <div class="signup-wrapper">
   <div class="split-container">
 
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <img src="{% static 'images/Animation - 1744994365620.gif' %}" alt="Login illustration" class="login-gif">
 
+      <div class="welcome-box">
+        <h2>Hello, Welcome!</h2>
+        <p>Already have an account?</p>
+        <div class="buttons">
+          <a href="{% url 'login' %}" class="blob-btn transition-link">
+            Sign Up
+            <span class="blob-btn__inner">
+              <span class="blob-btn__blobs">
+                <span class="blob-btn__blob"></span>
+                <span class="blob-btn__blob"></span>
+                <span class="blob-btn__blob"></span>
+                <span class="blob-btn__blob"></span>
+              </span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div> 
 
-<!-- LEFT PANEL -->
-<div class="left-panel">
-  <img src="{% static 'images/Animation - 1744994365620.gif' %}" alt="Login illustration" class="login-gif">
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="login-box">
+        <h2>Join Now</h2>
+        <form method="post">
+          {% csrf_token %}
 
-  <div class="welcome-box">
-    <h2>Hello, Welcome!</h2>
-    <p>Already have an account?</p>
-    <div class="buttons">
-      <a href="{% url 'login' %}" class="blob-btn transition-link">
-        Sign Up
-        <span class="blob-btn__inner">
-          <span class="blob-btn__blobs">
-            <span class="blob-btn__blob"></span>
-            <span class="blob-btn__blob"></span>
-            <span class="blob-btn__blob"></span>
-            <span class="blob-btn__blob"></span>
-          </span>
-        </span>
-      </a>
+          <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">
+              <i class='bx bxs-user'></i> {{ form.username.label }}
+            </label>
+            {{ form.username }}
+            {% if form.username.help_text %}
+              <small style="font-size: 12px;">{{ form.username.help_text }}</small>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">
+              <i class='bx bxs-envelope'></i> {{ form.email.label }}
+            </label>
+            {{ form.email }}
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}">
+              <i class='bx bxs-lock'></i> {{ form.password1.label }}
+            </label>
+            {{ form.password1 }}
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}">
+              <i class='bx bxs-lock'></i> {{ form.password2.label }}
+            </label>
+            {{ form.password2 }}
+          </div>
+
+          <div class="form-group consent-checkbox">
+            <input type="checkbox" id="consent" name="consent" required>
+            <label for="consent">I understand and consent that My Coeliac Guide collects only essential personal
+               data necessary for dietary and symptom tracking.</label>
+          </div>
+
+          <button type="submit">Sign Up</button>
+
+        </form>
+      </div>
     </div>
-  </div>
-</div> 
 
-
-
-
-
-
-
-
-
-
-<!-- RIGHT PANEL -->
-<div class="right-panel">
-  <div class="login-box">
-    <h2>Join Now</h2>
-    <form method="post">
-      {% csrf_token %}
-
-      <div class="form-group">
-        <label for="{{ form.username.id_for_label }}">
-          <i class='bx bxs-user'></i> {{ form.username.label }}
-        </label>
-        {{ form.username }}
-        {% if form.username.help_text %}
-          <small style="font-size: 12px;">{{ form.username.help_text }}</small>
-        {% endif %}
-      </div>
-
-      <div class="form-group">
-        <label for="{{ form.email.id_for_label }}">
-          <i class='bx bxs-envelope'></i> {{ form.email.label }}
-        </label>
-        {{ form.email }}
-      </div>
-
-      <div class="form-group">
-        <label for="{{ form.password1.id_for_label }}">
-          <i class='bx bxs-lock'></i> {{ form.password1.label }}
-        </label>
-        {{ form.password1 }}
-      </div>
-
-      <div class="form-group">
-        <label for="{{ form.password2.id_for_label }}">
-          <i class='bx bxs-lock'></i> {{ form.password2.label }}
-        </label>
-        {{ form.password2 }}
-      </div>
-
-      <!-- Correct Sign Up button here -->
-      <button type="submit">Sign Up</button>
-
-
-    </form>
   </div>
 </div>
-  
-    </div>
 
-
-    
+<div class="footer">
+  <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
+</div>
 
 <!-- Flash Messages -->
 {% if messages %}

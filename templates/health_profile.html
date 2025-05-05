@@ -11,15 +11,21 @@
             {% if profile.profile_picture %}
                 <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
             {% else %}
-                <img src="https://via.placeholder.com/120" alt="Default">
+                <div class="avatar-placeholder">
+                    <i class="bx bxs-user"></i>
+                </div>
             {% endif %}
         </div>
-        <h2>{{ request.user.username }}</h2>
-        <p><strong>Weight:</strong> {{ profile.weight }} kg</p>
-        <p><strong>Height:</strong> {{ profile.height }} cm</p>
-        <p><strong>DOB:</strong> {{ profile.date_of_birth }}</p>
-        <p><strong>Gender:</strong> {{ profile.sex }}</p>
-        <button class="btn-edit" onclick="toggleEdit(true)">Update Profile</button>
+        <h2>{{ request.user.get_full_name|default:request.user.username }}</h2>
+        <ul class="profile-details">
+            <ul><strong>Username:</strong> {{ request.user.username }}</ul>
+            <ul><strong>Email:</strong> {{ request.user.email }}</ul>
+            <ul><strong>Weight:</strong> {{ profile.weight }} kg</ul>
+            <ul><strong>Height:</strong> {{ profile.height }} cm</ul>
+            <ul><strong>DOB:</strong> {{ profile.date_of_birth|date:"M d, Y" }}</ul>
+            <ul><strong>Gender:</strong> {{ profile.sex }}</ul>
+        </ul>
+        <button class="btn btn-edit" onclick="toggleEdit(true)"><i class='bx bx-edit-alt'></i> Update Profile</button>
     </div>
 
     <!-- Edit Profile Form -->
@@ -27,36 +33,69 @@
         <h2>Update Your Profile</h2>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn-save"><i class='bx bxs-save'></i> Save Changes</button>
-            <button type="button" class="btn-cancel" onclick="toggleEdit(false)">Cancel</button>
+            <div class="form-grid">
+                {{ form.non_field_errors }}
+                <div class="form-group">
+                    {{ form.profile_picture.label_tag }}
+                    {{ form.profile_picture }}
+                </div>
+                <div class="form-group">
+                    {{ form.weight.label_tag }}
+                    <div class="unit-group">
+                        {{ form.weight }}
+                        <span class="unit">kg</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.height.label_tag }}
+                    <div class="unit-group">
+                        {{ form.height }}
+                        <span class="unit">cm</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.date_of_birth.label_tag }}
+                    {{ form.date_of_birth }}
+                </div>
+                <div class="form-group">
+                    {{ form.sex.label_tag }}
+                    {{ form.sex }}
+                </div>
+            </div>
+            <div class="profile-form-buttons">
+                <button type="submit" class="btn btn-save"><i class='bx bxs-save'></i> Save Changes</button>
+                <button type="button" class="btn btn-cancel" onclick="toggleEdit(false)"><i class='bx bx-x'></i> Cancel</button>
+            </div>
         </form>
     </div>
 </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
+  </div>
 
 <script>
-    function toggleEdit(showEdit) {
+function toggleEdit(showEdit) {
     const view = document.getElementById("view-profile");
     const edit = document.getElementById("edit-profile");
 
     if (showEdit) {
-        view.style.opacity = 0;
-        setTimeout(() => {
-            view.style.display = "none";
-            edit.style.display = "block";
-            edit.style.opacity = 0;
-            setTimeout(() => edit.style.opacity = 1, 10);
-        }, 300);
+        view.classList.add('fade-out');
+        view.addEventListener('transitionend', () => {
+            view.style.display = 'none';
+            edit.style.display = 'block';
+            edit.classList.add('fade-in');
+        }, { once: true });
     } else {
-        edit.style.opacity = 0;
-        setTimeout(() => {
-            edit.style.display = "none";
-            view.style.display = "block";
-            view.style.opacity = 0;
-            setTimeout(() => view.style.opacity = 1, 10);
-        }, 300);
+        edit.classList.add('fade-out');
+        edit.addEventListener('transitionend', () => {
+            edit.style.display = 'none';
+            view.style.display = 'block';
+            view.classList.add('fade-in');
+        }, { once: true });
     }
 }
-
 </script>
+
 {% endblock %}

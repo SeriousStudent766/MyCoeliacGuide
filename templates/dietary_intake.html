@@ -34,12 +34,46 @@
   <!-- Food Log Form -->
   <div class="log-form">
     <h3>Add a Meal</h3>
-    <form method="POST">
+    <form method="POST" class="meal-form">
       {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn-save">Add Meal</button>
+      <div class="form-grid">
+        <div class="form-group">
+          {{ form.date.label_tag }}
+          {{ form.date }}
+        </div>
+        <div class="form-group">
+          {{ form.meal_type.label_tag }}
+          {{ form.meal_type }}
+        </div>
+        <div class="form-group full">
+          {{ form.food_name.label_tag }}
+          {{ form.food_name }}
+        </div>
+        <div class="form-group">
+          {{ form.calories.label_tag }}
+          {{ form.calories }}
+        </div>
+        <div class="form-group">
+          {{ form.carbs.label_tag }}
+          {{ form.carbs }}
+        </div>
+        <div class="form-group">
+          {{ form.protein.label_tag }}
+          {{ form.protein }}
+        </div>
+        <div class="form-group">
+          {{ form.fat.label_tag }}
+          {{ form.fat }}
+        </div>
+        <div class="form-group full gluten-field">
+          {{ form.gluten_free.label_tag }}
+          {{ form.gluten_free }}
+        </div>
+      </div>
+      <button type="submit" class="btn-deposit">Add Meal</button>
     </form>
   </div>
+  
 
   <!-- Logs Display -->
   <div class="meal-logs">
@@ -59,6 +93,10 @@
   <div class="history-link" style="text-align: center; margin-top: 1rem;">
     <a href="{% url 'dietary_history' %}" class="btn-history">📅 View Meal History</a>
   </div>
+</div>
+
+<div class="footer">
+  <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
 </div>
 
 <!-- Chart Script -->
