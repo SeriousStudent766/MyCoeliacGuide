@@ -1,0 +1,198 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{% block title %}My Coeliac Guide Home{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/guide_home.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+  <div class="dashboard-grid">
+
+    <!-- LEFT COLUMN -->
+    <div class="side-col">
+      <div class="card panel">
+        <h2>Last Reaction</h2>
+        {% if last_reaction %}
+          <p>You last had a reaction <strong>{{ days_since }}</strong> day{{ days_since|pluralize }} ago</p>
+          <p><small>({{ last_reaction.date }})</small></p>
+        {% else %}
+          <p><em>No reactions logged yet.</em></p>
+        {% endif %}
+      </div>
+      <div class="card panel">
+        <h2>Why It Matters</h2>
+        <ul>
+          <li>Diarrhoea (sometimes with an unpleasant odour)</li>
+          <li>Stomach aches</li>
+          <li>Bloating &amp; flatulence</li>
+          <li>Indigestion</li>
+          <li>Constipation</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MIDDLE COLUMN -->
+    <div class="card panel">
+      <header class="panel-header">
+        <h2>Exposure Chart</h2>
+        <form method="get" class="year-form">
+          <select name="year" onchange="this.form.submit()">
+            {% for y in years %}
+            <option value="{{ y }}"{% if y == year %} selected{% endif %}>{{ y }}</option>
+
+            {% endfor %}
+          </select>
+        </form>
+      </header>
+      <canvas id="exposureChart"></canvas>
+
+      <hr>
+      <h3>Add an Exposure</h3>
+      <form method="post">
+        {% csrf_token %}
+        <input type="date" name="exposure_date" required>
+        <input type="number" name="reaction_count" min="0" placeholder="Count" required>
+        <button type="submit">Add</button>
+      </form>
+
+      <h4>History</h4>
+      <ul>
+        {% for ex in exposures %}
+          <li>{{ ex.date }} → {{ ex.reaction_count }}</li>
+        {% empty %}
+          <li><em>No exposures logged yet.</em></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="card panel">
+      <h2>Today's Summary</h2>
+      <canvas
+        id="nutritionChart"
+        class="chart"                 
+        data-carbs="{{ totals.carbs }}"
+        data-protein="{{ totals.protein }}"
+        data-fat="{{ totals.fat }}"
+      ></canvas>
+
+    
+      <ul class="totals-list">
+        <li><strong>Calories:</strong> {{ totals.calories }}</li>
+        <li><strong>Carbs:</strong> {{ totals.carbs }}g</li>
+        <li><strong>Protein:</strong> {{ totals.protein }}g</li>
+        <li><strong>Fat:</strong> {{ totals.fat }}g</li>
+      </ul>
+
+      <hr>
+      <h3>Log a Meal</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{ fl_form.as_p }}
+        <button type="submit">Add Meal</button>
+      </form>
+
+      <h4>Today's Meals</h4>
+      <ul>
+        {% for log in today_logs %}
+          <li>{{ log.meal_type|title }} – {{ log.food_name }} ({{ log.calories }} kcal)</li>
+        {% empty %}
+          <li><em>No meals logged yet.</em></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="card panel disclaimer">
+    <strong>Disclaimer:</strong> The content on My Coeliac Guide is general info only – not medical advice.
+    Always consult a qualified healthcare professional before changing your diet or treatment plan.
+  </div>
+</div>
+
+<script>
+  // ─── Bar Chart ─────────────────────────────────────────────
+  const allData = JSON.parse(document.getElementById('chart-data').textContent);
+    const yearSelector = document.getElementById('yearSelector');
+    const ctx = document.getElementById('exposureChart').getContext('2d');
+
+    // Populate dropdown
+    const years = Object.keys(allData).sort((a, b) => b - a); // Sort years in descending order
+
+    years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelector.appendChild(option);
+    });
+
+    let chart;
+
+    function renderChart(year) {
+        const data = allData[year];
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Reactions',
+                    data: data.reaction_counts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+    }
+
+    // Initial load
+    if (years.length > 0) {
+    renderChart(years[0]);  // This now uses the most recent year
+    yearSelector.value = years[0];
+}
+
+
+    yearSelector.addEventListener('change', function () {
+        renderChart(this.value);
+    });
+  // ─── Pie Chart ─────────────────────────────────────────────
+  document.querySelectorAll('.chart').forEach((canvas, i) => {
+    new Chart(canvas.getContext('2d'), {
+      type: 'pie',
+      data: {
+        labels: ['Carbs','Protein','Fat'],
+        datasets: [{
+          data: [
+            parseInt(canvas.dataset.carbs),
+            parseInt(canvas.dataset.protein),
+            parseInt(canvas.dataset.fat)
+          ],
+          backgroundColor: [
+            'rgba(255, 206, 86, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+            'rgba(255, 99, 132, 0.7)'
+          ],
+          borderColor: [
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

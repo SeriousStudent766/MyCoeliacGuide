@@ -34,6 +34,16 @@ from django.shortcuts import render, redirect
 from .forms import FoodLogForm
 from datetime import date
 from datetime import date, timedelta
+from .models import Reaction, DietaryIntake 
+
+from django.db.models.functions import TruncMonth
+
+
+
+
+
+
+ 
 
 
 
@@ -262,13 +272,12 @@ def view_day_logs(request, date):
 
 
 
-# Create your views here.
+
 
 def index(request): # Home page view
     return render(request, 'index.html')
 
-def MyGuideHome(request): # MyGuideHome page view
-    return render(request, 'MyGuideHome.html')
+
 
 def aboutus(request):
     return render(request, 'aboutus.html')
@@ -452,4 +461,95 @@ def favorites_list(request):
     return render(request, 'favorites_list.html', {
         'meals': recipes,
         'fav_count': fav_qs.count(),
+    })
+
+
+
+
+
+
+
+@login_required
+def guide_home(request):
+    user = request.user
+
+    # ─── Handle form submissions ─────────────────────────────────────────
+    #  a) new gluten exposure
+    if request.method == "POST" and "exposure_date" in request.POST:
+        d = request.POST["exposure_date"]
+        cnt = int(request.POST["reaction_count"])
+        GlutenExposure.objects.create(user=user, date=d, reaction_count=cnt)
+        return redirect("MyGuideHome")
+
+    #  b) new food log
+    form = FoodLogForm(request.POST or None)
+    if request.method == "POST" and "meal_type" in request.POST:
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.user = user
+            entry.save()
+            return redirect("MyGuideHome")
+
+    # ─── 1) Last Reaction ─────────────────────────────────────────────────
+    last_reaction = (
+        Reaction.objects
+        .filter(user=user)
+        .order_by("-date")
+        .first()
+    )
+    days_since = (date.today() - last_reaction.date).days if last_reaction else None
+
+    # ─── 2) Exposure chart data ──────────────────────────────────────────
+    selected_year = int(request.GET.get("year", date.today().year))
+    qs = (
+        Reaction.objects
+        .filter(user=user, date__year=selected_year)
+        .annotate(month=TruncMonth("date"))
+        .values("month")
+        .annotate(count=Count("id"))
+        .order_by("month")
+    )
+    monthly_counts = [0]*12
+    for row in qs:
+        monthly_counts[row["month"].month - 1] = row["count"]
+
+    # ─── exposures history for list & last_exposure_message ─────────────
+    exposures = GlutenExposure.objects.filter(user=user).order_by("-date")
+    last_exp = exposures.first()
+    if last_exp:
+        days = (date.today() - last_exp.date).days
+        last_exposure_message = f"You last had a reaction {days} day(s) ago ({last_exp.date:%d/%m/%Y})"
+    else:
+        last_exposure_message = "No reactions logged yet."
+
+    # ─── 3) Today’s dietary totals & logs ───────────────────────────────
+    today = date.today()
+    totals = DietaryIntake.objects.filter(user=user, date=today).aggregate(
+        calories=Sum("calories"),
+        carbs   =Sum("carbs"),
+        protein =Sum("protein"),
+        fat     =Sum("fat"),
+    )
+    for k in totals:
+        totals[k] = totals[k] or 0
+
+    today_logs = FoodLog.objects.filter(user=user, date=today)
+
+    # ─── Year dropdown (last 5 years) ──────────────────────────────────
+    curr = date.today().year
+    years = list(range(curr, curr-5, -1))
+
+    fl_form     = FoodLogForm()
+    today_logs  = FoodLog.objects.filter(user=user, date=date.today())
+
+    return render(request, 'guide_home.html', {
+        'last_reaction':   last_reaction,
+        'days_since':      days_since,
+        'year':            selected_year,    
+        'monthly_counts':  monthly_counts,
+        'totals':          totals,
+        'years':           years,
+        'exposures':       exposures,       
+        'fl_form':         fl_form,          
+        'today_logs':      today_logs,      
     })

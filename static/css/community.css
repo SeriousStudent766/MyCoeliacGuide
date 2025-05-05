@@ -67,7 +67,8 @@ body {
     padding: 20px;
     border-radius: 10px;
     border: 1px solid #e1ebe1;
-    margin-bottom: 12px; /* Add this */
+    margin-bottom: 12px; 
+    margin-top: 2rem;
 }
 
 .reply-form {
@@ -92,11 +93,16 @@ body {
 }
 
 .reply-box {
-    background: #fefefe;
+    margin-left: 2.5rem;   
+    background: #fff;
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
     margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    margin-left: 2.5rem;
+    margin-bottom: 1rem;
 }
 
 .reply-content {
@@ -241,3 +247,59 @@ textarea::placeholder {
     color: #999;
     font-style: italic;
 }
+
+
+/* common avatar styling */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.75rem;
+  }
+  
+  /* slightly smaller avatar for replies */
+  .reply-avatar {
+    width: 32px;
+    height: 32px;
+    margin-right: 0.5rem;
+  }
+
+  .comment-box .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.75rem;
+    float: left;
+  }
+  .reply-box .reply-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.5rem;
+    float: left;
+  }
+  /* then clear floats on the .comment-box/.reply-box as needed */
+  
+  .comment-box,
+.reply-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;              /* space between avatar & content */
+  background: #f9fdfb;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #e1ebe1;
+  margin-bottom: 1.5rem;
+} 
+
+.avatar,
+.reply-avatar {
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.comment-box .avatar,
+.reply-box .reply-avatar { float: none; }

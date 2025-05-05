@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.conf import settings
 
 
 
@@ -147,3 +147,26 @@ def create_health_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_health_profile(sender, instance, **kwargs): 
     instance.healthprofile.save()
+
+
+
+class Reaction(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date = models.DateField()
+    notes = models.TextField(blank=True)
+    # … any other fields you need …
+
+    def __str__(self):
+        return f"{self.user} – {self.date}"
+
+class DietaryIntake(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date = models.DateField()
+    calories = models.IntegerField(default=0)
+    carbs    = models.IntegerField(default=0)
+    protein  = models.IntegerField(default=0)
+    fat      = models.IntegerField(default=0)
+    # … any other macros you track …
+
+    def __str__(self):
+        return f"{self.user} – {self.date}"
