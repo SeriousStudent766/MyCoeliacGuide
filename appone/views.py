@@ -23,7 +23,7 @@ from django.contrib.auth import logout
 from .forms import RecipeFilter
 from .models import Recipe, Category, FavouriteRecipe
 from . import views
-from .models import Comment, ViewedMeal
+from .models import ViewedMeal, Comment
 from datetime import datetime, date
 from django.utils.timesince import timesince
 from django.views.decorators.http import require_POST
@@ -37,6 +37,13 @@ from datetime import date, timedelta
 from .models import Reaction, DietaryIntake 
 
 from django.db.models.functions import TruncMonth
+
+from django.db.models import Count, Exists, OuterRef
+
+
+# appone/views.py
+
+
 
 
 
@@ -285,38 +292,119 @@ def aboutus(request):
 
 
 
+
+
+
+from .models import (
+    Community, Like, HealthProfile, Recipe,
+    ViewedMeal, FavouriteRecipe,
+    GlutenExposure, Reaction, DietaryIntake, FoodLog
+)
+from .forms  import HealthProfileForm, RecipeFilter, FoodLogForm, UserSignUpForm
+
+def view_day_logs(request, date_str):
+    try:
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+    except ValueError:
+        return render(request, 'error.html', {'message': 'Invalid date format.'})
+
+    logs = FoodLog.objects.filter(user=request.user, date=date_obj)
+    totals = {
+        'calories': sum(l.calories for l in logs),
+        'carbs':     sum(l.carbs     for l in logs),
+        'protein':   sum(l.protein   for l in logs),
+        'fat':       sum(l.fat       for l in logs),
+    }
+
+    return render(request, 'view_day_logs.html', {
+        'logs':   logs,
+        'date':   date_obj,
+        'totals': totals,
+    })
+
+def index(request):
+    return render(request, 'index.html')
+
+def aboutus(request):
+    return render(request, 'aboutus.html')
+
+
+
+
+
+
 @login_required
 def community(request):
     query = request.GET.get('q', '')
-    sort = request.GET.get('sort', 'recent')
+    sort  = request.GET.get('sort', 'recent')
 
-    all_community = Community.objects.filter(parent__isnull=True)
-
+    # Base threads
+    qs = Community.objects.filter(parent__isnull=True)
     if query:
-        all_community = all_community.filter(content__icontains=query)
+        qs = qs.filter(content__icontains=query)
 
+    # Annotate counts & whether current user liked
+    user_like_qs = Like.objects.filter(user=request.user, comment=OuterRef('pk'))
+    qs = qs.annotate(
+        like_count=Count('likes', distinct=True),
+        is_liked  =Exists(user_like_qs),
+    )
+
+    # Sort
     if sort == 'oldest':
-        all_community = all_community.order_by('created_at')
+        qs = qs.order_by('created_at')
     elif sort == 'most_liked':
-        all_community = all_community.annotate(like_count=Count('likes')).order_by('-like_count', '-created_at')
-    else:  # default to recent
-        all_community = all_community.order_by('-created_at')
+        qs = qs.order_by('-like_count', '-created_at')
+    else:
+        qs = qs.order_by('-created_at')
 
-    # Handle new posts and replies
     if request.method == 'POST':
-        user_community = request.POST.get('community')
-        parent_id = request.POST.get('parent_id')
-        parent = Community.objects.filter(id=parent_id).first() if parent_id else None
-
-        if user_community:
-            Community.objects.create(content=user_community, user=request.user, parent=parent)
+        like_id   = request.POST.get('like_id')
+        if like_id:
+            thread = get_object_or_404(Community, id=like_id)
+            existing = Like.objects.filter(user=request.user, comment=thread).first()
+            if existing:
+                existing.delete()
+            else:
+                Like.objects.create(user=request.user, comment=thread)
             return redirect('community')
 
+        # Handle new post or reply with image
+        body      = request.POST.get('community')
+        parent_id = request.POST.get('parent_id')
+        image     = request.FILES.get('image')  # NEW
+        parent    = Community.objects.filter(id=parent_id).first() if parent_id else None
+
+        if body or image:
+            Community.objects.create(
+                content=body,
+                user=request.user,
+                parent=parent,
+                image=image  # NEW
+            )
+        return redirect('community')
+
+
+        # Otherwise: new thread or reply
+        body      = request.POST.get('community')
+        parent_id = request.POST.get('parent_id')
+        parent    = Community.objects.filter(id=parent_id).first() if parent_id else None
+        if body:
+            Community.objects.create(content=body, user=request.user, parent=parent)
+        return redirect('community')
+
     return render(request, 'community.html', {
-        'community': all_community,
-        'query': query,
-        'sort': sort,
+        'community': qs,
+        'query':     query,
+        'sort':      sort,
     })
+
+
+
+
+
+
+
 
 
 
@@ -391,6 +479,8 @@ def recipe_page(request):
 
 
 
+
+
 @login_required
 def recipe_detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
@@ -431,8 +521,8 @@ def recipe_detail(request, recipe_id):
     })
 
 
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+
+
 
 @login_required
 def toggle_favorite(request, recipe_id):

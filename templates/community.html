@@ -2,94 +2,184 @@
 {% load static %}
 
 {% block content %}
-  {# Compute fallback avatar URL #}
   {% static 'images/default-avatar.png' as default_avatar %}
 
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="{% static 'css/community.css' %}">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
 
   <div class="forum-wrapper">
     <div class="forum-container">
       <h1 class="forum-title">Community Discussions</h1>
 
-      <!-- 🔍 FILTER SECTION -->
+      <!-- Filter / Search -->
       <form method="get" class="community-filters">
-        <input type="text" name="q" placeholder="Search discussions..." value="{{ query }}">
+        <input type="search"
+               name="q"
+               placeholder="Search discussions..."
+               value="{{ query }}">
         <select name="sort">
-          <option value="recent" {% if sort == 'recent' %}selected{% endif %}>Most Recent</option>
-          <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest</option>
-          <option value="most_liked" {% if sort == 'most_liked' %}selected{% endif %}>Most Liked</option>
+          <option value="recent" {% if sort == "recent" %}selected{% endif %}>
+            Most Recent
+          </option>
+          <option value="oldest" {% if sort == "oldest" %}selected{% endif %}>
+            Oldest
+          </option>
+          <option value="most_liked" {% if sort == "most_liked" %}selected{% endif %}>
+            Most Liked
+          </option>
+          
         </select>
         <button type="submit">Filter</button>
       </form>
 
-      <!-- ✏️ Post a New Thread -->
-      <form method="POST" class="post-form">
+      <!-- New Thread -->
+      <form method="POST"
+            class="post-form"
+            enctype="multipart/form-data">
         {% csrf_token %}
-        <textarea name="community" placeholder="Start a new thread..." required></textarea>
+        <textarea name="community"
+                  placeholder="Start a new thread…"
+                  required></textarea>
+        <input type="file" name="image" accept="image/*">
         <div class="button-wrapper">
           <button type="submit">Post</button>
         </div>
       </form>
 
-      <!-- 🧵 Threaded Comments -->
+      <!-- Thread List -->
       <div class="thread-list">
         {% for comment in community %}
           <div class="comment-thread">
+
+            <!-- Main Comment Box -->
             <div class="comment-box">
-              {% if comment.user.healthprofile.profile_picture %}
-                <img src="{{ comment.user.healthprofile.profile_picture.url }}" class="avatar" alt="avatar">
-              {% else %}
-                <img src="{{ default_avatar }}" class="avatar" alt="avatar">
+              <div class="post-header">
+                <img src="{% if comment.user.healthprofile.profile_picture %}{{ comment.user.healthprofile.profile_picture.url }}{% else %}{{ default_avatar }}{% endif %}"
+                     class="avatar"
+                     alt="{{ comment.user.username }}’s avatar">
+                <div class="post-meta">
+                  <span class="username">{{ comment.user.username }}</span>
+                  <span class="sep">•</span>
+                  <time class="timestamp">
+                    {{ comment.created_at|date:"d M Y, H:i" }}
+                  </time>
+                </div>
+              </div>
+              <div class="comment-content">
+                {{ comment.content|linebreaksbr }}
+              </div>
+              {% if comment.image %}
+                <img src="{{ comment.image.url }}"
+                     class="post-image"
+                     alt="Attachment">
               {% endif %}
 
-              <p class="comment-content">{{ comment.content }}</p>
-              <div class="meta">
-                Posted by <strong>{{ comment.user.username }}</strong> •
-                {{ comment.created_at|date:"d M Y, H:i" }}
-              </div>
               <div class="like-row">
                 <form method="POST" class="like-form">
                   {% csrf_token %}
-                  <input type="hidden" name="like_id" value="{{ comment.id }}">
-                  <button type="submit" class="like-btn">👍 {{ comment.likes.count }}</button>
+                  <input type="hidden"
+                         name="like_id"
+                         value="{{ comment.id }}">
+                  <button class="like-btn"
+                          type="submit"
+                          aria-label="Like">
+                    <box-icon name="like"
+                              {% if comment.is_liked %}type="solid"{% endif %}>
+                    </box-icon>
+                    <span>{{ comment.like_count }}</span>
+                  </button>
                 </form>
               </div>
             </div>
+            <!-- /.comment-box -->
 
-            <div class="reply-list">
-              {% for reply in comment.replies.all %}
-                <div class="reply-box">
-                  {% if reply.user.healthprofile.profile_picture %}
-                    <img src="{{ reply.user.healthprofile.profile_picture.url }}" class="avatar reply-avatar" alt="avatar">
-                  {% else %}
-                    <img src="{{ default_avatar }}" class="avatar reply-avatar" alt="avatar">
-                  {% endif %}
+            <!-- Replies + Reply Form -->
+            <div class="reply-section">
 
-                  <div class="reply-body">
-                    <p class="reply-content">{{ reply.content }}</p>
-                    <div class="meta">
-                      Replied by <strong>{{ reply.user.username }}</strong> •
-                      {{ reply.created_at|date:"d M Y, H:i" }}
+              <!-- Toggle Replies Button -->
+              <button type="button"
+                      class="toggle-replies"
+                      data-comment-id="{{ comment.id }}">
+                View Replies ({{ comment.replies.count }})
+              </button>
+
+              <!-- Replies Panel (hidden by default) -->
+              <div id="replies-{{ comment.id }}"
+                   class="reply-list"
+                   hidden>
+                {% for reply in comment.replies.all %}
+                  <div class="reply-box">
+                    <img src="{% if reply.user.healthprofile.profile_picture %}{{ reply.user.healthprofile.profile_picture.url }}{% else %}{{ default_avatar }}{% endif %}"
+                         class="reply-avatar"
+                         alt="{{ reply.user.username }}’s avatar">
+                    <div class="reply-body">
+                      <div class="post-meta">
+                        <span class="username">{{ reply.user.username }}</span>
+                        <span class="sep">•</span>
+                        <time class="timestamp">
+                          {{ reply.created_at|date:"d M Y, H:i" }}
+                        </time>
+                      </div>
+                      <div class="reply-content">
+                        {{ reply.content|linebreaksbr }}
+                      </div>
+                      {% if reply.image %}
+                        <img src="{{ reply.image.url }}"
+                             class="reply-image"
+                             alt="Reply image">
+                      {% endif %}
                     </div>
                   </div>
-                </div>
-              {% endfor %}
-            </div>
-
-            <form method="POST" class="reply-form">
-              {% csrf_token %}
-              <textarea name="community" placeholder="Reply to this thread…" required></textarea>
-              <input type="hidden" name="parent_id" value="{{ comment.id }}">
-              <div class="button-wrapper">
-                <button type="submit">Reply</button>
+                {% endfor %}
               </div>
-            </form>
+              <!-- /.reply-list -->
+
+              <!-- Reply Form -->
+              <form method="POST"
+                    class="reply-form"
+                    enctype="multipart/form-data">
+                {% csrf_token %}
+                <textarea name="community"
+                          placeholder="Reply to this thread…"
+                          required></textarea>
+                <input type="file" name="image" accept="image/*">
+                <input type="hidden"
+                       name="parent_id"
+                       value="{{ comment.id }}">
+                <div class="button-wrapper">
+                  <button type="submit">Reply</button>
+                </div>
+              </form>
+
+            </div>
+            <!-- /.reply-section -->
+
           </div>
         {% empty %}
           <p class="no-threads">No discussions yet. Be the first to share!</p>
         {% endfor %}
       </div>
+      <!-- /.thread-list -->
     </div>
   </div>
+  <!-- /.forum-wrapper -->
 
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.toggle-replies').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id      = btn.dataset.commentId;
+          const replies = document.getElementById(`replies-${id}`);
+          if (!replies) return;
+          replies.hidden = !replies.hidden;
+          const count = replies.querySelectorAll('.reply-box').length;
+          btn.textContent = replies.hidden
+            ? `View Replies (${count})`
+            : `Hide Replies (${count})`;
+        });
+      });
+    });
+  </script>
 {% endblock %}

@@ -3,7 +3,14 @@ from django.contrib.auth.forms import UserCreationForm  # Correct import
 from django.contrib.auth.models import User
 from .models import HealthProfile, Category
 from django.shortcuts import render, redirect
+from .models import Comment
 from .models import FoodLog
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content', 'image']
 
 
 #adds an email field to the signup form

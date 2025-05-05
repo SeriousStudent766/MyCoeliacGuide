@@ -6,6 +6,7 @@ from django.conf import settings
 
 
 
+
 # model for gluten exposure
 class GlutenExposure(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # link to the user model
@@ -50,15 +51,47 @@ class FavouriteRecipe(models.Model):
         return f"{self.user.username} - {self.recipe.name}"
 
 
+
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipe = models.ForeignKey("Recipe", on_delete=models.CASCADE, related_name="comments")  # link to your recipe model
     content = models.TextField()
+    image = models.ImageField(upload_to='comment_images/', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+
 
     def __str__(self):
         return f"{self.user.username}: {self.content[:30]}"
+
+
+
+
+
+
+class Community(models.Model):
+    user       = models.ForeignKey(
+                     settings.AUTH_USER_MODEL,
+                     null=True, blank=True,
+                     on_delete=models.CASCADE
+                 )
+    content    = models.TextField()
+    image      = models.ImageField(
+                     upload_to='community_images/',
+                     blank=True, null=True
+                 )
+    created_at = models.DateTimeField(auto_now_add=True)
+    parent     = models.ForeignKey(
+                     'self', null=True, blank=True,
+                     related_name='replies',
+                     on_delete=models.CASCADE
+                 )
+
+    def __str__(self):
+        preview = (self.content[:27] + '...') if len(self.content) > 30 else self.content
+        username = self.user.username if self.user else 'Anonymous'
+        return f"{username}: {preview}"
+
 
 
 
@@ -97,34 +130,41 @@ class Recipe(models.Model):
 
     
 
+    
+
+
+
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.ForeignKey('Community', on_delete=models.CASCADE, related_name='likes')
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment    = models.ForeignKey(
+                     Community,
+                     on_delete=models.CASCADE,
+                     related_name='likes'
+                 )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'comment')  # prevent duplicate likes
+        unique_together = ('user', 'comment')
 
     def __str__(self):
-        return f"{self.user.username} liked comment {self.comment.id}"
+        return f"{self.user.username} liked thread {self.comment.id}"
 
-class Community(models.Model):
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
-    def str(self):
-        return self.content[:50]
+
+
+
+
+
+
 
 class HealthProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50, default='Unknown')
-    last_name = models.CharField(max_length=50, default='Unknown')
-    date_of_birth = models.DateField(null=True, blank=True, default='2000-01-01')  
-    sex = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')], default='Male')
-    height = models.CharField(max_length=10, default='170')  
-    weight = models.CharField(max_length=10, default='60')   
+    first_name = models.CharField(max_length=50, default=' ')
+    last_name = models.CharField(max_length=50, default=' ')
+    date_of_birth = models.DateField(null=True, blank=True, default=' ')  
+    sex = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')], default=' ')
+    height = models.CharField(max_length=10, default=' ')  
+    weight = models.CharField(max_length=10, default=' ')   
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
 
 
@@ -139,7 +179,7 @@ def create_health_profile(sender, instance, created, **kwargs):
     if created:
         HealthProfile.objects.create(
             user=instance,
-            date_of_birth='2000-01-01',  # Default values to prevent NULL errors
+            date_of_birth='2000-01-01',  
             height='170',
             weight='60'
         )
@@ -154,7 +194,7 @@ class Reaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date = models.DateField()
     notes = models.TextField(blank=True)
-    # … any other fields you need …
+   
 
     def __str__(self):
         return f"{self.user} – {self.date}"
