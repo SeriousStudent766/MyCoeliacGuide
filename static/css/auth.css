@@ -155,6 +155,8 @@ button[type="submit"] {
   font-size: 15px;
   cursor: pointer;
   margin-top: 10px;
+  display: block;        
+  margin: 10px 0 0 auto;
 }
 
 button[type="submit"]:hover {

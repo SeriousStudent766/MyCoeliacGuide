@@ -412,22 +412,26 @@ def community(request):
 
 
 
-@login_required
 def health_profile(request):
-    profile, created = HealthProfile.objects.get_or_create(user=request.user)
+    # grab the one‐to‐one that always exists
+    profile = request.user.healthprofile
 
     if request.method == 'POST':
-        form = HealthProfileForm(request.POST, request.FILES, instance=profile)
+        form = HealthProfileForm(
+            request.POST,
+            request.FILES,      # ← critical!
+            instance=profile
+        )
         if form.is_valid():
             form.save()
             return redirect('health_profile')
     else:
         form = HealthProfileForm(instance=profile)
 
-    return render(request, 'health_profile.html', {'form': form, 'profile': profile})
-
-
-
+    return render(request, 'health_profile.html', {
+        'profile': profile,
+        'form': form
+    })
 
 
 

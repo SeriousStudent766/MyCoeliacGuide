@@ -1,3 +1,22 @@
+:root {
+    --font-body:      'Poppins', sans-serif;
+    --font-heading:   'Playfair Display', serif;
+  }
+
+
+body {
+    font-family: 'Nunito', sans-serif;
+    color: #18230F;
+    background-color: #f9fff8;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 1rem;
+    text-align: left; 
+    padding-top: 0rem; 
+   padding-bottom: 4rem;
+}
+
 
 .page-wrapper {
     max-width: 1200px;
@@ -7,7 +26,7 @@
   }
   .page-title {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #27391C;
     margin-bottom: 1.5rem;
     margin-top: 10rem;
@@ -291,7 +310,7 @@
   .page-title2 {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: 4rem;
+    font-size: 3.9rem;
     color: #18230F;      
     margin: 1.5rem 0;    
     margin-top: 10rem; 
@@ -312,3 +331,14 @@
     text-transform: capitalize;
   }
   
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #f9fdfa;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+  }
