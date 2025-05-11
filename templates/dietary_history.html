@@ -2,92 +2,96 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/diet.css' %}">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="{% static 'css/diet.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="diet-wrapper">
+  <div class="diet-wrapper">
 
-  <!-- Timeframe Filter -->
-  <div class="filter-controls">
-    <form method="get">
-      <select name="range" onchange="this.form.submit()">
-        <option value="1" {% if range == '1' %}selected{% endif %}>Yesterday</option>
-        <option value="7" {% if range == '7' %}selected{% endif %}>Last 7 Days</option>
-        <option value="30" {% if range == '30' %}selected{% endif %}>Last 30 Days</option>
-      </select>
-    </form>
-  </div>
-
-  <!-- Day Cards -->
-  {% for day in dates %}
-  <div class="day-summary-card">
-    <div class="day-title">{{ day.date|date:"F j, Y" }}</div>
-    <div class="day-chart-info">
-      <canvas class="chart" data-carbs="{{ day.total_carbs }}"
-                         data-protein="{{ day.total_protein }}"
-                         data-fat="{{ day.total_fat }}"></canvas>
-
-      <div class="meal-info">
-        <strong>Meals:</strong><br>
-        {% for meal in day.logs %}
-          {{ meal.meal_type|title }} – {{ meal.food_name }}<br>
-        {% endfor %}
-        <p><strong>Calories:</strong> {{ day.total_calories }} kcal</p>
-        <p><strong>Carbs:</strong> {{ day.total_carbs }}g</p>
-        <p><strong>Protein:</strong> {{ day.total_protein }}g</p>
-        <p><strong>Fat:</strong> {{ day.total_fat }}g</p>
-      </div>
+    <!-- Timeframe Filter -->
+    <div class="filter-controls">
+      <form method="get">
+        <select name="range" onchange="this.form.submit()">
+          <option value="1"  {% if range == '1'  %}selected{% endif %}>Yesterday</option>
+          <option value="7"  {% if range == '7'  %}selected{% endif %}>Last 7 Days</option>
+          <option value="30" {% if range == '30' %}selected{% endif %}>Last 30 Days</option>
+        </select>
+      </form>
     </div>
+
+    <!-- Day Cards -->
+    {% for day in dates %}
+      <div class="day-summary-card">
+        <div class="day-title">{{ day.date|date:"F j, Y" }}</div>
+
+        <div class="day-chart-info">
+          <canvas class="chart"
+                  data-carbs="{{ day.total_carbs }}"
+                  data-protein="{{ day.total_protein }}"
+                  data-fat="{{ day.total_fat }}">
+          </canvas>
+
+          <div class="meal-info">
+            <strong>Meals:</strong>
+            <ul class="meal-list">
+              {% for meal in day.logs %}
+                <li>
+                  <span class="meal-type">{{ meal.meal_type|title }}</span>
+                  – <span class="food-name">{{ meal.food_name }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <div class="macro-totals">
+              <p><strong>Calories:</strong> {{ day.total_calories }} kcal</p>
+              <p><strong>Carbs:</strong>    {{ day.total_carbs }} g</p>
+              <p><strong>Protein:</strong>  {{ day.total_protein }} g</p>
+              <p><strong>Fat:</strong>      {{ day.total_fat }} g</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="no-history">No meal history for this range.</p>
+    {% endfor %}
+
   </div>
-  {% empty %}
-    <p>No meal history for this range.</p>
-  {% endfor %}
-</div>
 
-<strong>Meals:</strong><br>
-{% for meal in day.logs %}
-  - {{ meal.meal_type|title }}: {{ meal.food_name }}<br>
-{% endfor %}
-
-
-<script>
-  // Init charts
-  document.querySelectorAll('.chart').forEach((canvas, i) => {
-    new Chart(canvas.getContext('2d'), {
-      type: 'pie',
-      data: {
-        labels: ['Carbs', 'Protein', 'Fat'],
-        datasets: [{
-          label: 'Macros Breakdown',
-          data: [
-            parseInt(canvas.dataset.carbs),
-            parseInt(canvas.dataset.protein),
-            parseInt(canvas.dataset.fat)
-          ],
-          backgroundColor: [
-            'rgba(255, 206, 86, 0.7)',
-            'rgba(75, 192, 192, 0.7)',
-            'rgba(255, 99, 132, 0.7)'
-          ],
-          borderColor: [
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(255, 99, 132, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom' }
+  <!-- Chart.js init (no changes) -->
+  <script>
+    document.querySelectorAll('.chart').forEach((canvas) => {
+      new Chart(canvas.getContext('2d'), {
+        type: 'pie',
+        data: {
+          labels: ['Carbs','Protein','Fat'],
+          datasets: [{
+            label: 'Macros Breakdown',
+            data: [
+              parseInt(canvas.dataset.carbs),
+              parseInt(canvas.dataset.protein),
+              parseInt(canvas.dataset.fat)
+            ],
+            backgroundColor: [
+              'rgba(255,206,86,0.7)',
+              'rgba(75,192,192,0.7)',
+              'rgba(255,99,132,0.7)'
+            ],
+            borderColor: [
+              'rgba(255,206,86,1)',
+              'rgba(75,192,192,1)',
+              'rgba(255,99,132,1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'bottom' } }
         }
-      }
+      });
     });
-  });
-</script>
+  </script>
 
-<div class="footer">
-  <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
-</div>
+  <div class="footer">
+    <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
+  </div>
 {% endblock %}

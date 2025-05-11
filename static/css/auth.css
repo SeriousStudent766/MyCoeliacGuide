@@ -28,7 +28,7 @@ body {
 /* === MAIN CONTAINER === */
 .split-container {
   display: flex;
-  width: 980px;
+  width: 1200px;
   max-width: 95%;
   height: auto;
   border-radius: 20px;
