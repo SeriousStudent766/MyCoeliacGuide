@@ -1,4 +1,4 @@
-/* health.css */
+
 :root {
   --primary-color:    #2e7d32;
   --secondary-color:  #f9fbe7;
@@ -186,7 +186,7 @@ body {
   opacity: 0.9;
 }
 
-/* Fade Animations */
+/* Fade animations */
 .fade-in {
   animation: fadeIn var(--transition) forwards;
 }
@@ -209,7 +209,7 @@ body {
   }
 }
 
-/* -- Form grid & pills for diet.css -- */
+/* form grid */
 .meal-form .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -298,9 +298,8 @@ body {
 }
 
 
-/* === FORM SPACING FIXES === */
+/*form spacing*/
 
-/* 1) Enforce vertical grid gap between each field row */
 .profile-form .form-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -308,13 +307,13 @@ body {
   column-gap: 2rem;
 }
 
-/* 2) Stack each label + input cleanly */
+
 .profile-form .form-group {
   display: flex;
   flex-direction: column;
 }
 
-/* 3) Give Django’s “Currently… / Clear” block breathing room */
+
 .clearable-file-input {
   margin: 0.75rem 0;
   font-size: 0.95rem;

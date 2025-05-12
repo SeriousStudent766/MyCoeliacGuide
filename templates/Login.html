@@ -3,14 +3,15 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-
 <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+
 <div class="login-wrapper">
   <div class="split-container">
 
-    <!-- LEFT PANEL -->
+    <!-- left -->
     <div class="left-panel">
-      <img src="{% static 'images/Animation - 1744994365620.gif' %}" alt="Login illustration" class="login-gif">
+      <img src="{% static 'images/Animation - 1744994365620.gif' %}"
+           alt="Login illustration" class="login-gif">
       <div class="welcome-box">
         <h2>Hello, Welcome!</h2>
         <p>Don't Have An Account?</p>
@@ -27,51 +28,65 @@
             </span>
           </a>
         </div>
-        
-
       </div>
     </div>
 
-    <!-- RIGHT PANEL -->
-    <div class="right-panel">
-      <div class="login-box">
-        <h2>Login</h2>
-        <form method="post">
-          {% csrf_token %}
+   <!-- right -->
+<div class="right-panel">
+  <div class="login-box">
+    <h2>Login</h2>
 
-          <div class="form-group">
-            <label for="id_username"><i class='bx bxs-user'></i> Username</label>
-            {{ form.username }}
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">
+          <i class='bx bxs-user'></i> Username
+        </label>
+        {{ form.username }}
+        {% if form.username.errors %}
+          <div class="field-errors">
+            {% for err in form.username.errors %}
+              <p>{{ err }}</p>
+            {% endfor %}
           </div>
-
-          <div class="form-group">
-            <label for="id_password"><i class='bx bxs-lock'></i> Password</label>
-            {{ form.password }}
-          </div>
-
-          <a href="{% url 'password_reset' %}" class="forgot-link">Forgot your password?</a>
-
-          <button type="submit">Login</button>
-        </form>
+        {% endif %}
       </div>
-    </div>
 
+      <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">
+          <i class='bx bxs-lock'></i> Password
+        </label>
+        {{ form.password }}
+        {% if form.password.errors %}
+          <div class="field-errors">
+            {% for err in form.password.errors %}
+              <p>{{ err }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      {# ← Moved non‐field (login) errors here, below the fields #}
+      {% if form.non_field_errors %}
+        <div class="form-errors non-field-errors">
+          {% for err in form.non_field_errors %}
+            <p>{{ err }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <a href="{% url 'password_reset' %}" class="forgot-link">
+        Forgot your password?
+      </a>
+
+      <button type="submit">Login</button>
+    </form>
   </div>
 </div>
 
-  
 
-
-  </div>
-
-  </div>
-  </div>
-
-  <div class="footer">
-    <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
-  </div>
-
- 
-
-
+<div class="footer">
+  <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
+</div>
 {% endblock %}

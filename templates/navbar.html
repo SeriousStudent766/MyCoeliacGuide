@@ -26,23 +26,6 @@
 
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
  
-
-
-
-
-  
-
-  
- 
-
-
-
-
-
- 
-
-
-
     <title> {%block title%}My site{%endblock%}</title>
     {% block extra_css %}{% endblock %}
 </head>
@@ -57,7 +40,7 @@
       
       </a>
 
-        <!-- Hamburger Menu for Mobile -->
+        <!--for Mobile -->
   <button class="menu-toggle" onclick="toggleMenu()">
     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -69,17 +52,12 @@
   </button>
   
 
-
-
-
-
-
   
-      <!-- NAVIGATION (dynamic based on login status) -->
+      <!-- NAVIGATION BARR -->
       <ul class="navbarNav">
         {% if request.user.is_authenticated %}
           <li class="navitem"><a class="navlink" href="{% url 'MyGuideHome' %}">My Guide Home</a></li>
-          <li class="navitem"><a class="navlink" href="{% url 'glutenExposure' %}">Gluten Exposure</a></li>
+          <li class="navitem"><a class="navlink" href="{% url 'glutenExposure' %}">Symptoms Log</a></li>
           <li class="navitem"><a class="navlink" href="{% url 'dietary_intake' %}">Dietary Intake</a></li>
           <li class="navitem"><a class="navlink" href="{% url 'recipes' %}">Recipes</a></li>
           <li class="navitem"><a class="navlink" href="{% url 'community' %}">Forum</a></li>
@@ -127,7 +105,7 @@
   window.addEventListener("scroll", () => {
     const currentScrollY = window.scrollY;
 
-    // Add background when scrolling down from top
+ 
     if (currentScrollY > 15) {
       NavigationBar.classList.add("scrolled");
     } else {

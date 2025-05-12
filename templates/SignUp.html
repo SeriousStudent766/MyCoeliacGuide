@@ -10,7 +10,7 @@
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
 
-<!-- Signup Wrapper -->
+<!-- container to help split my page into 2 -->
 <div class="signup-wrapper">
   <div class="split-container">
 
@@ -23,7 +23,7 @@
         <p>Already have an account?</p>
         <div class="buttons">
           <a href="{% url 'login' %}" class="blob-btn transition-link">
-            Sign Up
+            Log In
             <span class="blob-btn__inner">
               <span class="blob-btn__blobs">
                 <span class="blob-btn__blob"></span>
@@ -42,18 +42,23 @@
       <div class="login-box">
         <h2>Join Now</h2>
         <form method="post">
-          {% csrf_token %}
+          {% csrf_token %} <!-- prevents CSRF attacks by validating the session -->
 
+          
+          <!-- username -->
           <div class="form-group">
             <label for="{{ form.username.id_for_label }}">
-              <i class='bx bxs-user'></i> {{ form.username.label }}
+              <i class='bx bxs-user'></i> {{ form.username.label }} 
             </label>
             {{ form.username }}
-            {% if form.username.help_text %}
+            {% if form.username.help_text %} 
+            <!-- help_text comes from the Django forms Meta class -->
               <small style="font-size: 12px;">{{ form.username.help_text }}</small>
             {% endif %}
           </div>
 
+
+          <!-- email  -->
           <div class="form-group">
             <label for="{{ form.email.id_for_label }}">
               <i class='bx bxs-envelope'></i> {{ form.email.label }}
@@ -61,6 +66,7 @@
             {{ form.email }}
           </div>
 
+          <!-- passworfd -->
           <div class="form-group">
             <label for="{{ form.password1.id_for_label }}">
               <i class='bx bxs-lock'></i> {{ form.password1.label }}

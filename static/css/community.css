@@ -6,7 +6,7 @@
 
 
    :root {
-    /* Colors */
+   
     --color-primary:   #2E7D32;
     --color-secondary: #81C784;
     --color-bg:        #F5FDF7;
@@ -16,22 +16,17 @@
     --color-muted:     #666666;
 
 
-  
-    /* Typography */
 
       --font-body:      'Poppins', sans-serif;
       --font-heading:   'Playfair Display', serif;
 
-  
-  
-    /* Spacing & Radii */
     --radius:    10px;
     --space-sm:  8px;
     --space-md:  16px;
     --space-lg:  24px;
     --space-xl:  32px;
   
-    /* Shadows */
+
     --shadow-sm:  0 2px 6px rgba(0,0,0,0.05);
     --shadow-md:  0 4px 18px rgba(0,0,0,0.06);
   }
@@ -48,17 +43,15 @@
     
     margin: 0;
     font-family: var(--font-body);
-    font-size: 1rem;           /* same base size as other pages */
-    line-height: 1.6;          /* match their rhythm */
+    font-size: 1rem;          
+    line-height: 1.6;          
     color: var(--color-text);
-    padding: var(--space-lg);  /* keep your existing padding */
-    padding-top: 80px;         /* for fixed navbar */
+    padding: var(--space-lg);  
+    padding-top: 80px;      
   }
   
   
-  /* ========================================================================== 
-     Forum Layout 
-     ========================================================================== */
+  /*Forum Layout  */
     
      .forum-title h2 {
       font-family: var(--font-heading);
@@ -88,9 +81,7 @@
   }
 
   
-  /* ========================================================================== 
-     Filters 
-     ========================================================================== */
+  /* Filters */
   .community-filters {
     display: flex;
     flex-wrap: wrap;
@@ -121,9 +112,7 @@
     background: var(--color-secondary);
   }
   
-  /* ========================================================================== 
-     New‐Thread & Reply Forms 
-     ========================================================================== */
+  /*New‐Thread & Reply Forms */
   .post-form textarea,
   .reply-form textarea {
     width: 100%;
@@ -156,23 +145,19 @@
     background: var(--color-secondary);
   }
   
-  /* ========================================================================== 
-     Thread List 
-     ========================================================================== */
+  /*Thread List */
   .thread-list {
     margin-top: var(--space-lg);
   }
   
-  /* ========================================================================== 
-     Main Comment Box 
-     ========================================================================== */
+  /*  Main Comment Box */
   .comment-thread {
     margin-bottom: var(--space-lg);
   }
   
  
   
-  /* Header (avatar + inline meta) */
+  /* Header*/
   .post-header {
     display: flex;
     align-items: center;
@@ -197,7 +182,7 @@
     color: var(--color-text);
   }
   
-  /* Content panel */
+  /* Content */
   .comment-content {
     background: #fafafa;
     border: 1px solid #eee;
@@ -235,9 +220,7 @@
 
   }
   
-  /* ========================================================================== 
-     Pinned Actions Gutter 
-     ========================================================================== */
+  /* Pinned Actions */
   .post-actions {
     position: absolute;
     top: var(--space-md);
@@ -283,9 +266,7 @@
     text-decoration: underline;
   }
   
-  /* ========================================================================== 
-     Replies Panel & Cards 
-     ========================================================================== */
+  /* Replies*/
   .reply-list {
     margin-top: var(--space-sm);
     border-left: 3px solid #c5e1c5;
@@ -326,14 +307,12 @@
     margin-bottom: var(--space-sm);
   }
   
-  /* Transition hide/show */
+  /* Transition*/
   .reply-list[hidden] {
     display: none;
   }
   
-  /* ========================================================================== 
-     Misc & Responsive 
-     ========================================================================== */
+
   .no-threads {
     text-align: center;
     color: var(--color-muted);
@@ -359,9 +338,7 @@
   font-size: 1rem;
 }
 
-/* ======================================================
-   Replies wrapper
-   ====================================================== */
+/* Replies wrapper*/
    .reply-section {
     background: #f5fdf7;              
     border: 1px solid var(--color-border);
@@ -403,7 +380,7 @@
   margin-top: 4rem; 
 }
 
-/* top‐of‐page title */
+
 .page-header h2{
 font-family: var(--font-heading) !important;
 font-size: 4rem;        

@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm  # Correct import
+from django.contrib.auth.forms import UserCreationForm 
 from django.contrib.auth.models import User
 from .models import HealthProfile, Category
 from django.shortcuts import render, redirect
@@ -10,7 +10,7 @@ from .models import FoodLog
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['content', 'image']
+        fields = ['content', 'image'] # fields to include in the form
 
 
 #adds an email field to the signup form
@@ -24,7 +24,7 @@ class UserSignUpForm(UserCreationForm):
 
 class HealthProfileForm(forms.ModelForm):
     class Meta:
-        model = HealthProfile
+        model = HealthProfile # Model for HealthProfile
         fields = [
             'profile_picture',
             'weight',
@@ -36,12 +36,12 @@ class HealthProfileForm(forms.ModelForm):
 
 
 
-class FoodLogForm(forms.ModelForm):
+class FoodLogForm(forms.ModelForm): # Form for FoodLog
     class Meta:
-        model = FoodLog
+        model = FoodLog # Model for FoodLog
         fields = ['date', 'meal_type', 'food_name', 'calories', 'carbs', 'protein', 'fat', 'gluten_free']
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'date': forms.DateInput(attrs={'type': 'date'}), # Date input widget
         }
 
 

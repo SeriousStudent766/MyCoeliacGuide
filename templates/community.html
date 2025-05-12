@@ -111,7 +111,7 @@
                 View Replies ({{ comment.replies.count }})
               </button>
 
-              <!-- Replies Panel (hidden by default) -->
+              <!-- Replies -->
               <div id="replies-{{ comment.id }}"
                    class="reply-list"
                    hidden>
@@ -140,9 +140,9 @@
                   </div>
                 {% endfor %}
               </div>
-              <!-- /.reply-list -->
+          
 
-              <!-- Reply Form -->
+              <!-- Reply form -->
               <form method="POST"
                     class="reply-form"
                     enctype="multipart/form-data">
@@ -160,7 +160,7 @@
               </form>
 
             </div>
-            <!-- /.reply-section -->
+           
 
           </div>
         {% empty %}

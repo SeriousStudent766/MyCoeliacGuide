@@ -118,7 +118,7 @@ body {
     color: #ffb300;
   }
   
-  /* recipes.css */
+
 
 /* Sidebar container */
 .filter-form {
@@ -175,7 +175,7 @@ body {
   }
   .form-check input[type="checkbox"] {
     margin-right: 0.5rem;
-    accent-color: #2a3d27; /* modern green check */
+    accent-color: #2a3d27;
     width: 1.1em;
     height: 1.1em;
   }

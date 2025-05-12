@@ -24,7 +24,7 @@ body {
   
 }
 
-/* Wrapper & Headings */
+/* Wrappers */
 .diet-wrapper {
   max-width: 900px;
   margin: 0 auto;
@@ -45,7 +45,7 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Cards */
+
 .summary-card,
 .log-form,
 .meal-logs {
@@ -57,7 +57,7 @@ body {
   margin-top: 4rem;
 }
 
-/* Chart + Macros */
+/* Chart and macros */
 .chart-wrapper {
   max-width: 320px;
   margin: 0 auto 1.5rem;
@@ -236,14 +236,11 @@ body {
 }
 
 
-/* -------------------------------------------------------------------
-   Day–history formatting tweaks
-   ------------------------------------------------------------------- */
 
-/* Give the meal list some breathing room & bullets */
+/* Give the meal list  */
 .meal-list {
   margin: 0.5rem 0 1rem 0;
-  padding-left: 1.25rem;    /* indentation for bullets */
+  padding-left: 1.25rem;   
   list-style: disc;
 }
 
@@ -263,14 +260,12 @@ body {
   color: var(--color-muted);
 }
 
-/* Optional: tighten up the macro totals grouping */
+
 .macro-totals p {
   margin: 0.25rem 0;
 }
 
-/* -------------------------------------------------------------------
-   Day–history card & chart formatting
-   ------------------------------------------------------------------- */
+/* day hsitory */
 
    .day-summary-card {
     background: var(--bg-white);
@@ -280,7 +275,7 @@ body {
     margin-bottom: var(--spacing);
   }
   
-  /* container for the chart + meal info */
+
   .day-chart-info {
     display: flex;
     flex-wrap: wrap;
@@ -288,16 +283,16 @@ body {
     gap: var(--spacing);
   }
   
-  /* force canvas to a fixed size so it doesn’t overflow */
+  
   .day-chart-info .chart {
-    flex: 0 0 160px;        /* reserve 160px width */
+    flex: 0 0 160px;      
     max-width: 160px;
     max-height: 160px;
-    width: 100% !important; /* override inline Chart.js sizing */
+    width: 100% !important;
     height: auto !important;
   }
   
-  /* on small screens, stack the chart above the text */
+
   @media (max-width: 640px) {
     .day-chart-info {
       flex-direction: column;

@@ -6,7 +6,7 @@
 
 
 <div class="page-header">
-    <h2>Gluten Exposure Log</h2>
+    <h2>symptom Log</h2>
   </div>
   
 
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <!-- RIGHT SIDE: Exposure History -->
+    <!-- Exposure history -->
     <div class="new-feature">
         <hr style="margin: 20px 0;">
         <h2 style="color: #1a521c;">Last Reaction</h2>
@@ -93,7 +93,6 @@
     const yearSelector = document.getElementById('yearSelector');
     const ctx = document.getElementById('exposureChart').getContext('2d');
 
-    // Populate dropdown
     const years = Object.keys(allData).sort((a, b) => b - a); // Sort years in descending order
 
     years.forEach(year => {
@@ -124,9 +123,9 @@
         });
     }
 
-    // Initial load
+   
     if (years.length > 0) {
-    renderChart(years[0]);  // This now uses the most recent year
+    renderChart(years[0]); 
     yearSelector.value = years[0];
 }
 

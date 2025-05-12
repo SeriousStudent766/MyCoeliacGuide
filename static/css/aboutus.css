@@ -206,7 +206,7 @@ body {
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Abstract shape background */
+/*shape background */
 .decorative-shape {
     position: absolute;
     width: 100%;
@@ -220,7 +220,7 @@ body {
     transform: rotate(20deg);
 }
 
-/* Dot overlay */
+/* overlay */
 .dot-overlay {
     position: absolute;
     width: 100px;

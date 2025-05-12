@@ -15,7 +15,7 @@
   
 
 
-/* Main layout */
+
 .layout {
     display: flex;
     justify-content: center;
@@ -26,7 +26,7 @@
     margin-top: -7rem;
 }
 
-/* Left Box - Exposure Log */
+
 .main-feature .container {
     background-color: #ffffff;
     padding: 30px;
@@ -37,7 +37,7 @@
     min-height: 580px;
 }
 
-/* Right Box - Coming Soon */
+
 .new-feature {
     background-color: #ffffff;
     padding: 30px;
@@ -64,9 +64,9 @@
     margin-top: 20px;
 }
 
-/* Typography */
+
 .container h1,
-.main-feature .container h1,    /* if you have h1 in multiple containers */
+.main-feature .container h1,  
 .new-feature h2 {
   font-family: var(--font-heading);
     font-size: 2.5rem;
@@ -76,7 +76,7 @@
     font-family: var(--font-heading);
   }
 
-/* Form styling for main input only */
+
 .inner-box form {
     width: 100%;
     max-width: 500px;
@@ -126,7 +126,7 @@ form button:hover {
     background-color: #388e3c;
 }
 
-/* Delete Button Styling */
+
 .delete-btn {
     background-color: #ffffff;
     color: #1a521c;
@@ -156,7 +156,7 @@ canvas {
     box-shadow: 0 0 10px rgba(100, 100, 100, 0.05);
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 1024px) {
     .layout {
         flex-direction: column;
@@ -227,7 +227,7 @@ canvas {
     margin-top: 10rem; 
   }
   
-/* top‐of‐page title */
+
 .page-header h2{
   font-family: var(--font-heading) !important;
   font-size: 4rem;        
@@ -235,7 +235,7 @@ canvas {
   margin: 4rem 0 1.5rem;  
 }
 
-/* sub‐headings */
+
 .container h3,
 .meal-logs h3,
 .profile-card h2 {

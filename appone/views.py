@@ -19,7 +19,6 @@ from django.http import JsonResponse
 import json
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
-
 from .forms import RecipeFilter
 from .models import Recipe, Category, FavouriteRecipe
 from . import views
@@ -35,13 +34,23 @@ from .forms import FoodLogForm
 from datetime import date
 from datetime import date, timedelta
 from .models import Reaction, DietaryIntake 
-
 from django.db.models.functions import TruncMonth
-
 from django.db.models import Count, Exists, OuterRef
 
 
+#home and about us page
+def guide_home(request): 
+    return render(request, 'guide_home.html')
 
+def index(request):
+    return render(request, 'index.html')
+
+def aboutus(request):
+    return render(request, 'aboutus.html')
+
+#----------------------------------------------------------------------------------------------------------------
+
+# authentication section 
 
 def SignUp(request):
     if request.method == "POST":
@@ -67,16 +76,20 @@ def logout_view(request):
     return redirect('index') #sends back to home page
 
 
+#end of authentication section
 
+#----------------------------------------------------------------------------------------------------------------
+
+# gluten exposure section
 
 @login_required
 def glutenExposure(request):
-    if request.method == 'POST' and 'delete_id' in request.POST:
-        delete_id = request.POST.get('delete_id')
-        GlutenExposure.objects.filter(id=delete_id, user=request.user).delete()
+    if request.method == 'POST' and 'delete_id' in request.POST: # check if the request is a POST request to delete an exposure
+        delete_id = request.POST.get('delete_id') # get the id of the exposure to delete
+        GlutenExposure.objects.filter(id=delete_id, user=request.user).delete() # delete the exposure 
         return redirect('glutenExposure')
 
-# check if the request is a POST request to add a new exposure
+# adds a new exposure 
     elif request.method == 'POST':
         date_input = request.POST.get('date') # get the date from the form
         reaction_count = request.POST.get('reaction_count') # get the reaction count from the form
@@ -89,19 +102,18 @@ def glutenExposure(request):
             )
 
             return redirect('glutenExposure')
-
-    exposures = GlutenExposure.objects.filter(user=request.user).order_by('date')
-
-   
-    grouped_by_year = defaultdict(lambda: defaultdict(int))
+        
+    # gets and groups all exposures for the logged-in user
+    exposures = GlutenExposure.objects.filter(user=request.user).order_by('date') 
+    grouped_by_year = defaultdict(lambda: defaultdict(int)) # group exposures by year and month
     for exposure in exposures:
         year = exposure.date.year
         month = exposure.date.strftime('%B')
         grouped_by_year[year][month] += exposure.reaction_count
 
     # Prepare sorted chart data
-    import calendar
-    month_order = list(calendar.month_name)[1:]
+    import calendar 
+    month_order = list(calendar.month_name)[1:] # Get month names in order
     chart_data = {}
     for year, months in grouped_by_year.items():
         sorted_months = [m for m in month_order if m in months]
@@ -129,103 +141,15 @@ def glutenExposure(request):
         'exposures': exposures
     })
 
-#everything above I COMMENTED
+#end of gluten exposure section
+#----------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-def guide_home(request):
-    # Renders the now-empty guide_home.html template
-    return render(request, 'guide_home.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-user = User.objects.first()
-FoodLog.objects.create(
-    user=user,
-    date=date.today() - timedelta(days=1),
-    meal_type='lunch',
-    food_name='Test Meal',
-    calories=300,
-    carbs=20,
-    protein=15,
-    fat=10,
-    gluten_free=True
-)
-
-
-
-
-
-def dietary_history(request):
-    # Get range from GET parameters
-    day_range = int(request.GET.get("range", 1))
-    start_date = date.today() - timedelta(days=day_range)
-
-    logs = (
-        FoodLog.objects
-        .filter(user=request.user, date__gte=start_date)
-        .order_by("-date")
-    )
-
-    grouped = defaultdict(list)
-    for log in logs:
-        grouped[log.date].append(log)
-
-    # Prepare daily summaries
-    day_summaries = []
-    for day, day_logs in grouped.items():
-        summary = {
-            "date": day,
-            "logs": day_logs,
-            "total_calories": sum(log.calories for log in day_logs),
-            "total_carbs": sum(log.carbs for log in day_logs),
-            "total_protein": sum(log.protein for log in day_logs),
-            "total_fat": sum(log.fat for log in day_logs),
-        }
-        day_summaries.append(summary)
-
-    context = {
-        "dates": sorted(day_summaries, key=lambda x: x["date"], reverse=True),
-        "range": str(day_range)
-    }
-    return render(request, "dietary_history.html", context)
-
-
-
-
-
-
-
+# dietary intake section
 
 def dietary_intake(request):
+    #shows the dietary intake page
     logs = FoodLog.objects.filter(user=request.user, date=date.today())
     form = FoodLogForm()
-
     if request.method == 'POST':
         form = FoodLogForm(request.POST)
         if form.is_valid():
@@ -250,6 +174,40 @@ def dietary_intake(request):
 
 
 
+def dietary_history(request):
+    # lists the dietary history
+    day_range = int(request.GET.get("range", 1))
+    start_date = date.today() - timedelta(days=day_range)
+
+    logs = (
+        FoodLog.objects
+        .filter(user=request.user, date__gte=start_date)
+        .order_by("-date")
+    )
+
+    # Group logs by date
+    grouped = defaultdict(list)
+    for log in logs:
+        grouped[log.date].append(log)
+
+    # Prepare daily summaries
+    day_summaries = []
+    for day, day_logs in grouped.items():
+        summary = {
+            "date": day,
+            "logs": day_logs,
+            "total_calories": sum(log.calories for log in day_logs),
+            "total_carbs": sum(log.carbs for log in day_logs),
+            "total_protein": sum(log.protein for log in day_logs),
+            "total_fat": sum(log.fat for log in day_logs),
+        }
+        day_summaries.append(summary)
+
+    context = {
+        "dates": sorted(day_summaries, key=lambda x: x["date"], reverse=True),
+        "range": str(day_range)
+    }
+    return render(request, "dietary_history.html", context)
 
 def view_day_logs(request, date):
     try:
@@ -273,29 +231,6 @@ def view_day_logs(request, date):
     }
 
     return render(request, 'view_day_logs.html', context)
-
-
-
-
-
-
-
-
-
-
-
-
-def index(request): # Home page view
-    return render(request, 'index.html')
-
-
-
-def aboutus(request):
-    return render(request, 'aboutus.html')
-
-
-
-
 
 
 
@@ -326,16 +261,12 @@ def view_day_logs(request, date_str):
         'totals': totals,
     })
 
-def index(request):
-    return render(request, 'index.html')
 
-def aboutus(request):
-    return render(request, 'aboutus.html')
+#end of dietary intake section
 
+#----------------------------------------------------------------------------------------------------------------
 
-
-
-
+# community section
 
 @login_required
 def community(request):
@@ -376,7 +307,7 @@ def community(request):
         # Handle new post or reply with image
         body      = request.POST.get('community')
         parent_id = request.POST.get('parent_id')
-        image     = request.FILES.get('image')  # NEW
+        image     = request.FILES.get('image')  
         parent    = Community.objects.filter(id=parent_id).first() if parent_id else None
 
         if body or image:
@@ -384,7 +315,7 @@ def community(request):
                 content=body,
                 user=request.user,
                 parent=parent,
-                image=image  # NEW
+                image=image 
             )
         return redirect('community')
 
@@ -404,12 +335,11 @@ def community(request):
     })
 
 
+#end of community section
 
+#----------------------------------------------------------------------------------------------------------------
 
-
-
-
-
+# health profile section
 
 
 def health_profile(request):
@@ -419,7 +349,7 @@ def health_profile(request):
     if request.method == 'POST':
         form = HealthProfileForm(
             request.POST,
-            request.FILES,      # ← critical!
+            request.FILES,      # for image upload
             instance=profile
         )
         if form.is_valid():
@@ -433,21 +363,19 @@ def health_profile(request):
         'form': form
     })
 
+#end of health profile section
+
+#----------------------------------------------------------------------------------------------------------------
 
 
 
-
-
-
-
-
-
-
+# recipe section
 
 def recipe_page(request):
-    form = RecipeFilter(request.GET or None)
-    recipes = Recipe.objects.all()
+    form = RecipeFilter(request.GET or None) # Create a form instance with GET data
+    recipes = Recipe.objects.all() # Get all recipes
 
+# Filter by categories if selected
     if form.is_valid():
         selected_categories = form.cleaned_data.get('category_choices')
         if selected_categories:
@@ -470,7 +398,7 @@ def recipe_page(request):
         recipes = recipes.order_by('carbs')
 
         fav_ids = []
-    if request.user.is_authenticated:
+    if request.user.is_authenticated: # check if user is logged in
         fav_qs    = FavouriteRecipe.objects.filter(user=request.user)
         fav_ids   = fav_qs.values_list('recipe_id', flat=True)
         fav_count = fav_qs.count()
@@ -522,7 +450,7 @@ def recipe_detail(request, recipe_id):
     else:
         fav_ids = set()
 
-    return render(request, 'recipe_detail.html', {
+    return render(request, 'recipe_detail.html', { 
         'recipe': recipe,
         'comments': comments,   
         'fav_ids': fav_ids,
@@ -533,18 +461,18 @@ def recipe_detail(request, recipe_id):
 
 
 @login_required
-def toggle_favorite(request, recipe_id):
+def toggle_favorite(request, recipe_id): # toggle favorite 
     from .models import FavouriteRecipe, Recipe
 
-    recipe = get_object_or_404(Recipe, pk=recipe_id)
-    fav, created = FavouriteRecipe.objects.get_or_create(
+    recipe = get_object_or_404(Recipe, pk=recipe_id) # get the recipe
+    fav, created = FavouriteRecipe.objects.get_or_create( # get or create a favorite
         user=request.user,
         recipe=recipe
     )
     if not created:
         # already existed → unfavorite
         fav.delete()
-    return redirect(request.META.get('HTTP_REFERER','/'))
+    return redirect(request.META.get('HTTP_REFERER','/')) # redirect to the previous page
 
 
 
@@ -552,15 +480,15 @@ def toggle_favorite(request, recipe_id):
 
 @login_required
 def favorites_list(request):
-    # grab all FavouriteRecipe for this user
-    fav_qs   = FavouriteRecipe.objects.filter(user=request.user).select_related('recipe')
-    # extract the Recipe objects
+    # gets all favorite recipes for user
+    fav_qs   = FavouriteRecipe.objects.filter(user=request.user).select_related('recipe') # prefetch related recipes
+    # get the recipe objects
     recipes  = [fav.recipe for fav in fav_qs]
-    return render(request, 'favorites_list.html', {
+    return render(request, 'favorites_list.html', { 
         'meals': recipes,
         'fav_count': fav_qs.count(),
     })
 
 
 
-
+#end of recipe section

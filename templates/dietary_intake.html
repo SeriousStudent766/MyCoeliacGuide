@@ -72,20 +72,28 @@
   </div>
   
 
-  <!-- Logs Display -->
+   <!-- Logs Display -->
   <div class="meal-logs">
     <h3>Today's Meals</h3>
     {% for log in logs %}
       <div class="meal-entry">
         <h4>{{ log.meal_type|title }}</h4>
         <p><strong>{{ log.food_name }}</strong></p>
-        <p>{{ log.calories }} kcal | {{ log.carbs }}g carbs | {{ log.protein }}g protein | {{ log.fat }}g fat</p>
-        <p>{% if log.gluten_free %}<span class="badge gluten-free">Gluten-Free</span>{% else %}<span class="badge">Contains Gluten</span>{% endif %}</p>
+        <p>
+          {{ log.calories }} kcal |
+          {{ log.carbs }}g carbs |
+          {{ log.protein }}g protein |
+          {{ log.fat }}g fat
+        </p>
+        {% if log.gluten_free %}
+          <p><span class="badge gluten-free">Gluten-Free</span></p>
+        {% endif %}
       </div>
     {% empty %}
       <p>No meals logged yet.</p>
     {% endfor %}
   </div>
+
 
   <div class="history-link" style="text-align: center; margin-top: 1rem;">
     <a href="{% url 'dietary_history' %}" class="btn-history">📅 View Meal History</a>
@@ -96,11 +104,11 @@
   <p>&copy; 2025 My Coeliac Guide. All rights reserved. The content on My Coeliac Guide is general info only – not medical advice. Always consult a qualified healthcare professional before changing your diet or treatment plan.</p>
 </div>
 
-<!-- Chart Script -->
+<!-- chart.js -->
 <script>
   const canvas = document.getElementById('nutritionChart');
 
-  // Get values from data attributes
+ 
   const carbs = parseInt(canvas.dataset.carbs) || 0;
   const protein = parseInt(canvas.dataset.protein) || 0;
   const fat = parseInt(canvas.dataset.fat) || 0;
