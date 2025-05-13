@@ -148,27 +148,27 @@ def glutenExposure(request):
 
 def dietary_intake(request):
     #shows the dietary intake page
-    logs = FoodLog.objects.filter(user=request.user, date=date.today())
-    form = FoodLogForm()
-    if request.method == 'POST':
-        form = FoodLogForm(request.POST)
-        if form.is_valid():
+    logs = FoodLog.objects.filter(user=request.user, date=date.today()) # get all logs for today
+    form = FoodLogForm() # creates a new form 
+    if request.method == 'POST': # check if the request is a POST request
+        form = FoodLogForm(request.POST) # creates a new form with the POST data
+        if form.is_valid(): # check if the form is valid
             entry = form.save(commit=False)
             entry.user = request.user
             entry.save()
             return redirect('dietary_intake')
 
     totals = {
-        'calories': sum(log.calories for log in logs),
-        'carbs': sum(log.carbs for log in logs),
-        'protein': sum(log.protein for log in logs),
-        'fat': sum(log.fat for log in logs),
+        'calories': sum(log.calories for log in logs), # calculate the total calories
+        'carbs': sum(log.carbs for log in logs),  # calculate the total carbs
+        'protein': sum(log.protein for log in logs), # calculate the total protein
+        'fat': sum(log.fat for log in logs), # calculate the total fat
     }
 
     context = {
-        'form': form,
-        'logs': logs,
-        'totals': totals,
+        'form': form, # pass the form to the template
+        'logs': logs, # pass the logs to the template
+        'totals': totals, # pass the totals to the template
     }
     return render(request, 'dietary_intake.html', context)
 
@@ -176,17 +176,17 @@ def dietary_intake(request):
 
 def dietary_history(request):
     # lists the dietary history
-    day_range = int(request.GET.get("range", 1))
-    start_date = date.today() - timedelta(days=day_range)
+    day_range = int(request.GET.get("range", 1)) # default to 1 day
+    start_date = date.today() - timedelta(days=day_range) 
 
     logs = (
         FoodLog.objects
-        .filter(user=request.user, date__gte=start_date)
+        .filter(user=request.user, date__gte=start_date) # filter logs by date
         .order_by("-date")
     )
 
-    # Group logs by date
-    grouped = defaultdict(list)
+    # group logs by date
+    grouped = defaultdict(list) 
     for log in logs:
         grouped[log.date].append(log)
 
@@ -204,10 +204,15 @@ def dietary_history(request):
         day_summaries.append(summary)
 
     context = {
-        "dates": sorted(day_summaries, key=lambda x: x["date"], reverse=True),
-        "range": str(day_range)
+        "dates": sorted(day_summaries, key=lambda x: x["date"], reverse=True), # sort by date
+        "range": str(day_range) # pass the range to the template
     }
     return render(request, "dietary_history.html", context)
+
+
+
+
+
 
 def view_day_logs(request, date):
     try:
@@ -416,7 +421,6 @@ def recipe_page(request):
 
 
 
-
 @login_required
 def recipe_detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
@@ -459,7 +463,6 @@ def recipe_detail(request, recipe_id):
 
 
 
-
 @login_required
 def toggle_favorite(request, recipe_id): # toggle favorite 
     from .models import FavouriteRecipe, Recipe
@@ -473,6 +476,7 @@ def toggle_favorite(request, recipe_id): # toggle favorite
         # already existed → unfavorite
         fav.delete()
     return redirect(request.META.get('HTTP_REFERER','/')) # redirect to the previous page
+
 
 
 
